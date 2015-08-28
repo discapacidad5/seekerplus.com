@@ -247,6 +247,27 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             }
 
+            if (0 === strpos($pathinfo, '/app/search')) {
+                // search_ads
+                if (rtrim($pathinfo, '/') === '/app/search') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'search_ads');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsSearchController::searchAction',  '_route' => 'search_ads',);
+                }
+
+                // search_ads_category
+                if (0 === strpos($pathinfo, '/app/search/category') && preg_match('#^/app/search/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<latitude>[^/]++)/(?P<longitude>[^/]++)/(?P<range>[^/]++)/?$#s', $pathinfo, $matches)) {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'search_ads_category');
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_ads_category')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsSearchController::searchCategoryAction',));
+                }
+
+            }
+
         }
 
         // _security_logout

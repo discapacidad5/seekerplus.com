@@ -37,3 +37,9 @@ show_ad:
 show_ad_map:
     pattern:  /app/ad/{idAd}/{idCity}/
     defaults: { _controller: AdsmanagerBundle:Ads:showMap }
+search_ads:
+    pattern:  /app/search/
+    defaults: { _controller: AdsmanagerBundle:AdsSearch:search }
+search_ads_category:
+    pattern:  /app/search/category/{idCategory}/{idCity}/{latitude}/{longitude}/{range}/
+    defaults: { _controller: AdsmanagerBundle:AdsSearch:searchCategory }
