@@ -132,6 +132,8 @@ initialize();
                     echo "','";
                     echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "adAddress", array()), "html", null, true);
                     echo "','";
+                    echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "rated", array()), "html", null, true);
+                    echo "','";
                     echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_ad", array("idAd" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()))), "html", null, true);
                     echo "');
 \t\t";
@@ -156,6 +158,8 @@ initialize();
                     echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "adPhone", array()), "html", null, true);
                     echo "','";
                     echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "adAddress", array()), "html", null, true);
+                    echo "','";
+                    echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "rated", array()), "html", null, true);
                     echo "','";
                     echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_ad", array("idAd" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()))), "html", null, true);
                     echo "');
@@ -246,7 +250,7 @@ function showCitiesDialog(){
   
 function getButtonContent(button){
 \t  if(button)
-\t\t  \$(\"#locationButton\").html('<a onclick=\"getMyLocation();getButtonContent(false)\" class=\"app-bar-element\" style=\"margin-left: 12%\"><span id=\"toggle-tiles-dropdown2\" class=\"mif-location mif-2x\"></span></a>');
+\t\t  \$(\"#locationButton\").html('<a onclick=\"getMyCurrentLocation();getButtonContent(false)\" class=\"app-bar-element\" style=\"margin-left: 12%\"><span id=\"toggle-tiles-dropdown2\" class=\"mif-location mif-2x\"></span></a>');
 \t  else
 \t\t  \$(\"#locationButton\").html('<a onclick=\"stopLocation();getButtonContent(true)\" class=\"app-bar-element\" style=\"margin-left: 12%\"><span id=\"toggle-tiles-dropdown2\" class=\"mif-stop mif-2x\"></span></a>'); 
 }  
@@ -267,7 +271,7 @@ function getButtonContent(button){
             if (($this->getAttribute($context["field"], "parent", array()) == 0)) {
                 // line 95
                 echo "\t\t\t\t\t  <div onclick=\"location='";
-                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_category", array("idCategory" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()), "latitude" => 0, "longitude" => 0, "range" => 0)), "html", null, true);
+                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_category", array("idCategory" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()), "range" => 0)), "html", null, true);
                 echo "';\" class=\"tile-small\" style=\"background: rgb(255, 255, 255) none repeat scroll 0% 0%;\">
 \t\t\t\t\t    <div class=\"tile-content iconic\">
 \t\t\t\t       \t\t<img style=\"width: 100%;height: 70%;\" alt=\"\" src=\"";
@@ -299,7 +303,7 @@ function getButtonContent(button){
           </div>
   \t</a>
    <div id=\"locationButton\">
-\t   <a onclick=\"getMyLocation();getButtonContent(false)\" class=\"app-bar-element\" style=\"margin-left: 12%\">
+\t   <a onclick=\"getMyCurrentLocation();getButtonContent(false)\" class=\"app-bar-element\" style=\"margin-left: 12%\">
 \t    \t<span id=\"toggle-tiles-dropdown2\" class=\"mif-location mif-2x\"></span>
 \t   </a>
    </div>
@@ -323,6 +327,6 @@ function getButtonContent(button){
 
     public function getDebugInfo()
     {
-        return array (  298 => 104,  292 => 103,  288 => 101,  281 => 98,  275 => 97,  269 => 95,  266 => 94,  262 => 93,  231 => 64,  222 => 62,  214 => 60,  206 => 58,  204 => 57,  199 => 56,  196 => 55,  192 => 54,  185 => 49,  182 => 48,  175 => 44,  165 => 42,  140 => 40,  118 => 38,  115 => 37,  110 => 36,  106 => 35,  100 => 32,  96 => 31,  83 => 21,  79 => 20,  76 => 19,  69 => 16,  65 => 15,  60 => 14,  57 => 13,  49 => 10,  41 => 6,  33 => 2,  11 => 1,);
+        return array (  302 => 104,  296 => 103,  292 => 101,  285 => 98,  279 => 97,  273 => 95,  270 => 94,  266 => 93,  235 => 64,  226 => 62,  218 => 60,  210 => 58,  208 => 57,  203 => 56,  200 => 55,  196 => 54,  189 => 49,  186 => 48,  179 => 44,  169 => 42,  142 => 40,  118 => 38,  115 => 37,  110 => 36,  106 => 35,  100 => 32,  96 => 31,  83 => 21,  79 => 20,  76 => 19,  69 => 16,  65 => 15,  60 => 14,  57 => 13,  49 => 10,  41 => 6,  33 => 2,  11 => 1,);
     }
 }

@@ -53,15 +53,15 @@ class ProfileFormType extends AbstractType
         		'format' => 'MM/dd/yyyy',
         		'label' => 'form.birthday', 'translation_domain' => 'FOSUserBundle','attr'=>  array(
         		'class'   => 'userForm')
-        	))
+        	));
         
-        ->add('current_password', 'password', array(
+      /*  ->add('current_password', 'password', array(
             'label' => 'form.current_password','attr'=>  array(
         		'class'   => 'userForm'),
             'translation_domain' => 'FOSUserBundle',
             'mapped' => false,
             'constraints' => $constraint,
-        ));
+        ));*/
     }
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

@@ -1,5 +1,6 @@
 _security_logout:
     pattern:  /logout
+    defaults: { _controller: UserBundle:Default:Default:logout }
     
 _facebook_secured:
     pattern: /secured/

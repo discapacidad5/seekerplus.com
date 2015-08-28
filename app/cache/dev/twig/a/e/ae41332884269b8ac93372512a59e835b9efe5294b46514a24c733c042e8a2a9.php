@@ -81,7 +81,7 @@ login seekerplus
 
 ";
         // line 28
-        echo $this->env->getExtension('facebook')->renderLoginButton(array("autologoutlink" => true, "size" => "xlarge", "label" => "Login con Facebook"));
+        echo $this->env->getExtension('facebook')->renderLoginButton(array("autologoutlink" => false, "size" => "xlarge", "label" => "Login con Facebook"));
         echo "
 <script>
   function goLogIn(){

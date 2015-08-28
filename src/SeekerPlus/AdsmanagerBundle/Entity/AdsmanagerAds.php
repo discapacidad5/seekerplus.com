@@ -62,6 +62,8 @@ class AdsmanagerAds
     
     private $catid;
     
+    private $rated;
+    
     private $products=array();
     
 	public function getId() {
@@ -262,6 +264,13 @@ class AdsmanagerAds
 		return $this;
 	}
 
+	public function getRated() {
+		return $this->rated;
+	}
+	public function setRated($rated) {
+		$this->rated = $rated;
+		return $this;
+	}
 	
     /**
      * Constructor
@@ -293,5 +302,6 @@ class AdsmanagerAds
     {
         $this->catid->removeElement($catid);
     }
+	
 	
 }

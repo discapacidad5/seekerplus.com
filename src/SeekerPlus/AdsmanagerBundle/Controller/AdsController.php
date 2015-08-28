@@ -4,9 +4,11 @@ namespace SeekerPlus\AdsmanagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerCategories;
 use SeekerPlus\AdsmanagerBundle\Form\AdsmanagerAdsType;
 use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerAds;
+use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerAdsRate;
 use SeekerPlus\AdsmanagerBundle\Models\Formdata;
 use SeekerPlus\AdsmanagerBundle\Models\Message;
 use SeekerPlus\AdsmanagerBundle\Models\Document;
@@ -311,15 +313,60 @@ class AdsController extends Controller
     	
     	$categories = $query->getResult();
     	
+    	$rated=$this->getRatedAds($idAd);
+    	
     	if(!$ad){
     		return $this->render('AdsmanagerBundle:Ads:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity));
     	}
     	
     	return $this->render('AdsmanagerBundle:Ads:show.html.twig',
-    			array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"ad"=>$ad));
+    			array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"ad"=>$ad,"rated"=>$rated));
     	 
     }
 
+    public function RateAction(Request $request){
+    	
+    	if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+    		return $this->redirectToRoute('fos_user_security_login');
+    	}
+    	
+    	if (!$request->isXmlHttpRequest()) {
+    		return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
+    	}
+    	
+    	$request = $this->container->get('request');
+    	$idAd = json_decode($request->request->get('idAd'));
+    	$rate = json_decode($request->request->get('rate'));
+    	
+    	$adsRate=new AdsmanagerAdsRate();
+    	$formData=new Formdata();
+    	$userId = $this->get('security.context')->getToken()->getUser()->getId();
+ 	
+    	if($this-> isRated($idAd,$userId)){
+    		
+    		$adsRate=$this->getDoctrine()
+    		->getRepository("AdsmanagerBundle:AdsmanagerAdsRate")
+    		->find($this->getRatedId($idAd,$userId));
+    		$adsRate->setIdUser($userId);
+    		$adsRate->setIdAds($idAd);
+    		$adsRate->setRate($rate);
+    		$formData->updateData($this);
+    		$this->setRatedAds($idAd,$this->getRatedAdsValue($idAd));
+    		$rated=$this->getRatedAds($idAd);
+    		$response = array("code" => 100 , "success" => true ,"rated" => $rated[0]);
+    		return new JsonResponse($response);
+    	}
+
+    	$adsRate->setIdUser($userId);
+    	$adsRate->setIdAds($idAd);
+    	$adsRate->setRate($rate);
+    	$formData->insertData($this,$adsRate);
+    	$this->setRatedAds($idAd,$this->getRatedAdsValue($idAd));
+    	$rated=$this->getRatedAds($idAd);
+    	$response = array("code" => 100 , "success" => true ,"rated" => $rated[0]);
+    	return new JsonResponse($response);
+
+    }
     public function showMapAction($idAd,$idCity,Request $request)
     {
     	if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
@@ -413,4 +460,75 @@ class AdsController extends Controller
      	return true;
     }
     
+    private function isRated($idAds,$idUser){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT a FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+    				AND a.idUser = :idUser
+				 '
+    	
+    	)->setParameter('idAds',$idAds)
+    	->setParameter('idUser',$idUser);
+    	
+    	$rated = $query->getResult();
+    	
+    	if($rated)
+    		return true;
+    	return false;
+    }
+    private function getRatedId($idAds,$idUser){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT a.id FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+    				AND a.idUser = :idUser
+				 '
+   
+    	)->setParameter('idAds',$idAds)
+    	->setParameter('idUser',$idUser);
+    	 
+    	$rateds = $query->getResult();
+   	
+    	return $rateds[0]['id'];
+    }
+    
+    private function getRatedAds($idAds){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT round(avg(a.rate))as rate,count(a.rate) as score FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+				 '
+  
+    	)->setParameter('idAds',$idAds);
+  
+    	$rateds = $query->getResult();
+    
+    	return $rateds;
+    }
+    
+    private function getRatedAdsValue($idAds){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT round(avg(a.rate))as rate,count(a.rate) as score FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+				 '
+    
+    	)->setParameter('idAds',$idAds);
+    
+    	$rateds = $query->getResult();
+    
+    	return $rateds[0]['rate'];
+    }
+    
+    private function setRatedAds($idAds,$rated){
+    	$formData=new Formdata();
+    	$ad=$this->getDoctrine()
+    	->getRepository("AdsmanagerBundle:AdsmanagerAds")
+    	->find($idAds);
+    	
+    	$ad->setRated($rated);
+    	$formData->updateData($this);
+    	
+    }
 }

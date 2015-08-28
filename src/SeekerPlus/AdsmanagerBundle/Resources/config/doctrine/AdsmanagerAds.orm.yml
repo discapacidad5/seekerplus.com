@@ -66,6 +66,11 @@ SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerAds:
             nullable: true
             unsigned: false
             comment: ''
+        rated:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
         published:
             type: boolean
             nullable: true
