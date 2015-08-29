@@ -113,8 +113,18 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
                 if (0 === strpos($pathinfo, '/app/category')) {
                     // show_category
-                    if (preg_match('#^/app/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<latitude>[^/]++)/(?P<longitude>[^/]++)/(?P<range>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (preg_match('#^/app/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<range>[^/]++)$#s', $pathinfo, $matches)) {
                         return $this->mergeDefaults(array_replace($matches, array('_route' => 'show_category')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsCategoriesController::showAction',));
+                    }
+
+                    // show_category_geolocation
+                    if (preg_match('#^/app/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<latitude>[^/]++)/(?P<longitude>[^/]++)/(?P<range>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'show_category_geolocation')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsCategoriesController::showGeolocationAction',));
+                    }
+
+                    // show_category_rated
+                    if (0 === strpos($pathinfo, '/app/categoryRated') && preg_match('#^/app/categoryRated/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<range>[^/]++)$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'show_category_rated')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsCategoriesController::showRatedAction',));
                     }
 
                     // show_category_map
@@ -145,6 +155,15 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'show_ad_map')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::showMapAction',));
                 }
 
+                // adRate
+                if (rtrim($pathinfo, '/') === '/app/ad-rate') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'adRate');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::RateAction',  '_route' => 'adRate',);
+                }
+
             }
 
             if (0 === strpos($pathinfo, '/app/search')) {
@@ -172,7 +191,7 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
         // _security_logout
         if ($pathinfo === '/logout') {
-            return array('_route' => '_security_logout');
+            return array (  '_controller' => 'UserBundle:Default:Default:logout',  '_route' => '_security_logout',);
         }
 
         // _facebook_secured

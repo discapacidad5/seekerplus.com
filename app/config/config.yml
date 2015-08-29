@@ -71,6 +71,7 @@ doctrine:
                 cos:          Swis\Bundle\DatabaseExtraBundle\DQL\Cos
                 radians:      Swis\Bundle\DatabaseExtraBundle\DQL\Radians
                 sin:          Swis\Bundle\DatabaseExtraBundle\DQL\Sin
+                round:        Swis\Bundle\DatabaseExtraBundle\DQL\Round
     
 
 # Swiftmailer Configuration

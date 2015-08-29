@@ -47,16 +47,14 @@
 	</a>
 	<span class="app-bar-pull"></span>
 	<div class="app-bar-divider"></div>
-	<div style="display: block; float: left;" class="input-control text" data-role="input">
-		
-		<input id="searchWord" style="width: 20rem;padding-right: 1rem !important;background: #fff" type="text" placeholder="Buscar ..." onkeyup="Buscar()">
-		
-		<div id="opciones" class="buscador-container" style=""></div>
-		
-		<button class="button"><span class="mif-search"></span></button>
-	</div>
-	
-	<span style="margin-top: 1rem; margin-left: 1rem; font-size: 0.9rem;" class="notify-icon mif-expand-more cities" onclick="showCitiesDialog('one');">Ciudades</span>
+	{% if cities is defined %}
+		<div style="display: block; float: left;" class="input-control text" data-role="input">
+		    <input id="searchWord" style="width: 20rem;padding-right: 1rem !important;background: #fff" type="text" placeholder="Buscar ..." onkeyup="Buscar()">
+		    <div id="opciones" class="buscador-container" style=""></div>
+		    <button class="button"><span class="mif-search"></span></button>
+		</div>
+		<span style="margin-top: 1rem; margin-left: 1rem; font-size: 0.9rem;" class="notify-icon mif-expand-more cities" onclick="showCitiesDialog('one');">Ciudades</span>
+	{% endif %}
 	<ul class="app-bar-menu place-right">
 		{% if is_granted("IS_AUTHENTICATED_FULLY") %}
 		<li>
@@ -152,9 +150,9 @@
 	function Buscar(){
 		var texto = $("#searchWord").val();
 		var pais = 0;
-		{{ location.id }}
-		{% if not location.id is defined %}
-    		pais = {{ location.id }};
+		
+		{% if location.id is defined %}
+    		pais = '{{ location.title }}';
 		{% endif %}    
 		$.ajax({
 			type: "POST",

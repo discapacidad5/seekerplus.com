@@ -23,13 +23,13 @@ class ChangePasswordFormType extends AbstractType
             // Symfony 2.1 support with the old constraint class
             $constraint = new OldUserPassword();
         }
-        $builder->add('current_password', 'password', array(
+     /*   $builder->add('current_password', 'password', array(
             'label' => 'form.current_password','attr'=>  array(
 			'class'   => 'userForm'),
             'translation_domain' => 'FOSUserBundle',
             'mapped' => false,
             'constraints' => $constraint,
-        ));
+        ));*/
         $builder->add('new', 'repeated', array(
             'type' => 'password',
             'options' => array('translation_domain' => 'FOSUserBundle'),

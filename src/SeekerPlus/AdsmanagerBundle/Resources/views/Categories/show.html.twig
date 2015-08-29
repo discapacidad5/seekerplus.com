@@ -1,3 +1,4 @@
+
 {% extends '::app.html.twig' %} 
 {% block title %} 
 {{ category.name }} | {{ city.alias }}
@@ -16,15 +17,13 @@
 {% endblock %}
 {% block content %}
 {{ parent() }}
-
-
 <div class="container page-content fg-dark" style="padding: 0.5rem;margin-bottom: 2rem;">
 <h2>
 	<ul class="t-menu horizontal compact" style="box-shadow: 0px 0px 20px 0px transparent ! important;">
 			<li style="height: 3rem; width: 3rem;" class=""><a style="width: 2.9rem; height: 2.9rem;" href="#" class="dropdown-toggle"><span style="width: 1rem;" class="icon mif-sort-asc mif-3x"></span></a>
 		    	<ul style="display: none;" class="t-menu compact" data-role="dropdown">
 		        	<li><a style="width: 3rem; height: 3rem;" onclick="getLocation();"><span class="icon mif-meter"></span></a></li>
-		            <li><a style="width: 3rem; height: 3rem;" href="#"><span class="icon mif-star-full"></span></a></li>
+		            <li><a style="width: 3rem; height: 3rem;" onclick="getRated();"><span class="icon mif-star-full"></span></a></li>
 		        </ul>
 		    </li>
 	</ul>
@@ -45,10 +44,17 @@ color: inherit;margin: 0px 0px 10px;"href="#" class="list">
 				{% endif %}
 	         <div class="data">
 	         	<span style="font-size: 14px;line-height: 16px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;" class="list-title"><b>{{ field.0.adHeadline|e }}</b></b></span>
-	         	<span style="font-size: 11px;line-height: 14px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;" class="list-remark">{{ field.0.adText|e }}</span>
+	         	<span style="font-size: 11px;line-height: 14px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;" class="list-remark">{{ field.0.adText|e }}&nbsp</span>
+	         	
 	         	<span class='rating small'data-score-title='Valoracion : ' data-role='rating' data-static='true'
-        			data-size='small' data-value='3' data-on-rate='doNothing'>
+        			data-size='small' data-value='{% if (field.1.0.0.rate) is empty %}
+								0
+							{% else %}
+								{{ field.1.0.0.rate |e }}
+							{% endif %}
+		        			' data-on-rate='doNothing'>
         		</span>
+        		<span> <small><span style="font-size: 0.6rem;" class="mif-users"><small>({{ field.1.0.0.score |e }})</small></span></span>
 	         </div>
 	         	{% if field.distance is defined %}
         		   <span style="font-size: 12px;line-height: 14px;margin: 0px 0px 0px 1rem;padding: 0px;display: block;overflow: hidden;
@@ -69,12 +75,23 @@ color: inherit;margin: 0px 0px 10px;"href="#" class="list">
 <div style="margin-bottom: 2rem;">
 	{% if range >= 10 %}
 	{% set minrange = range - 10 %}
-	<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'latitude':latitude,'longitude':longitude,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
+		{% if latitude is defined %}
+		<a href="{{ path('show_category_geolocation', {'idCategory': category.id,'idCity': location.id,'latitude':latitude,'longitude':longitude,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
+		{% elseif rated is defined %}
+		<a href="{{ path('show_category_rated', {'idCategory': category.id,'idCity': location.id,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
+		{% else %}
+		<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
+		{% endif %}
 	{% endif %}
-	
-	{% if counter >= 9 %}
+	{% if counter >= 10 %}
 	{% set maxrange = range + 10 %}
-	<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'latitude':latitude,'longitude':longitude,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
+		{% if latitude is defined %}
+		<a href="{{ path('show_category_geolocation', {'idCategory': category.id,'idCity': location.id,'latitude':latitude,'longitude':longitude,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
+		{% elseif rated is defined %}
+		<a href="{{ path('show_category_rated', {'idCategory': category.id,'idCity': location.id,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
+		{% else %}
+		<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
+		{% endif %}
 	{% endif %}
 </div>
 <br>
@@ -116,10 +133,11 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(setPosition);
     } else { 
-
     }
 }
-
+function getRated() {
+		window.location.assign("{{ path('index')}}app/categoryRated/{{category.id}}/{{location.id}}/0");
+}
 function setPosition(position) {
 		window.location.assign("{{ path('index')}}app/category/{{category.id}}/{{location.id}}/"+position.coords.latitude+"/"+position.coords.longitude+"/0");
 }
@@ -132,7 +150,7 @@ function setPosition(position) {
               <div class="tile-container bg-white fg-black">
               		{% for field in categories %}
 				      {% if field.parent == 0 %}
-					  <div onclick="location='{{ path('show_category', {'idCategory': field.id,'idCity': location.id,'latitude':0,'longitude':0,'range':0}) }}';" class="tile-small" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+					  <div onclick="location='{{ path('show_category', {'idCategory': field.id,'idCity': location.id,'range':0}) }}';" class="tile-small" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
 					    <div class="tile-content iconic">
 				       		<img style="width: 100%;height: 70%;" alt="" src="{{asset('../')}}images/com_adsmanager/categories/{{ field.id|e }}cat.png">
 				       	<p class="pCategories" style="margin-top: -1.1rem;text-align: center;">{{  field.name }}</p>

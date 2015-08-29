@@ -219,6 +219,56 @@ function getMyLocation(){
                 timeout: 1000
               });
         }
+function getMyCurrentLocation(){
+
+	//CREACION DEL MARCADOR  
+	  marker = new google.maps.Marker({
+	  title: 'Arrastra el marcador si quieres moverlo',
+	  map: map,
+	  draggable: true
+	});
+
+	  marker.setIcon("http://seekerplus.com/images/map/person.png");
+	  
+	//CREACION DEL CIRCULO
+	  circle = new google.maps.Circle({
+	      map: map,
+	      radius: 30,
+	      strokeWeight: 0,
+	      strokePosition: google.maps.StrokePosition.CENTER,
+	      fillColor: '#38A934'
+	    });
+
+	 circle.bindTo('center', marker, 'position');
+   updateMarkerPosition (latLng);
+   
+// Escucho el CLICK sobre el mama y si se produce actualizo la posicion del marcador
+   google.maps.event.addListener(map, 'click', function(event) {
+   updateMarker(event.latLng);
+ });
+
+       dragActive = false;
+       watcher = navigator.geolocation.watchPosition(function(position){
+
+        currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        marker.setPosition(currentPosition);
+        updateMarkerPosition (currentPosition);
+        geocodePosition(currentPosition);
+        // Desactivar el seguimiento cuando se activa el drag
+        if (!dragActive) {
+          map.setZoom(18);
+          circle.setVisible(true);
+          map.setCenter(currentPosition);
+        }
+      }, function(error){
+        circle.setVisible(false);
+      }, {
+        enableHighAccuracy:true,
+        maximumAge: 0,
+        timeout: 1000
+      });
+}
 function stopLocation(){
     if ((navigator.geolocation) && (watcher !== null)) {
         navigator.geolocation.clearWatch(watcher);
@@ -227,7 +277,7 @@ function stopLocation(){
       }
 }
 
-function setLocationPlaces(id,catId,latitud,longitud,titulo,imagen,telefono,direccion,url){
+function setLocationPlaces(id,catId,latitud,longitud,titulo,imagen,telefono,direccion,rated,url){
 	geocoder = new google.maps.Geocoder();  
     var latlng = new google.maps.LatLng(latitud,longitud);
     var places= new google.maps.Marker({
@@ -242,14 +292,15 @@ function setLocationPlaces(id,catId,latitud,longitud,titulo,imagen,telefono,dire
         			"<address> "+
         			"<a style='color: #000' href="+url+"><strong style='font-size: 1rem;'>"+titulo+"</strong></a><br>" +
         			""+direccion+"<br>" +
+        			"<div class='rating small'data-score-title='Valoracion : ' data-role='rating' data-static='true' " +
+        			"data-size='small' data-value='"+rated+"' data-on-rate='doNothing'>" +
+        			"</div>" +
         			"<br><a onclick='toggleStreetView("+latitud+","+longitud+");'>Vista de la calle</a>" +
         			"</address> "+ 
         			"<div style='width: 10rem ! important;'>" +
         			"<img style='width: 100%;' " +
-        			"src='"+imagen+"'" +
-        			"<div class='rating small'data-score-title='Valoracion : ' data-role='rating' data-static='true' " +
-        			"data-size='small' data-value='3' data-on-rate='doNothing'>" +
-        			"</div>"+
+        			"src='"+imagen+"'</img>" +
+        			""+
         		"</div>"
     });
 

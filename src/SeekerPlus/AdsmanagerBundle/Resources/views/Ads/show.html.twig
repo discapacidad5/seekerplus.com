@@ -65,9 +65,21 @@
 		        </div>
 		      </div>
 			</div>
-			<span style="margin-left: 1rem;margin-top: 0.2rem" class='rating large'data-score-title='Valoracion : ' data-role='rating'
-	        			data-value='3'>
-	        		</span>
+
+			<div id="rate">
+				<span style="margin-left: 1rem;margin-top: 0.2rem" class='rating large'data-score-title='Valoracion : ' data-role='rating'
+		        			data-value='
+							{% if rated.0.rate is empty %}
+								0
+							{% else %}
+								{{ rated.0.rate |e }}
+							{% endif %}
+		        			' 
+		        			data-on-rate="adRate">
+		        </span>
+		        <span> <span class="mif-users"><small>({{ rated.0.score |e }})</small></span></span>
+		      
+		   </div>     
 			<span style="font-size: 0.8rem;line-height: 20px;margin: 1rem;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;" class="list-remark">{{ ad.adText|e }}</span>
 			
 			<div class="tabcontrol" data-role="tabControl">
@@ -133,14 +145,40 @@ function showCitiesDialog(){
     var dialog = $("#cities").data('dialog');
     dialog.open();
 }
+
+function adRate(value, star, widget){
+    $.post('{{ path('adRate') }}',               
+            {idAd: {{ ad.id|e }}, rate:value}, 
+        	function(response){
+
+                if(response.code == 100 && response.success){
+                	$("#rate").html("<span style='margin-left: 1rem;margin-top: 0.2rem'" 
+                        	+"class='rating large'data-score-title='Valoracion : ' data-role='rating'"
+    	        			+"data-value='"+response.rated.rate+"' data-on-rate='adRate'></span>"
+    	        			+"<span><span class='mif-users'><small>("+response.rated.score+")</small></span></span>");
+                	showMessageAdRate();
+                }
+	}, "json"); 
+}
+
+function showMessageAdRate(){
+    var dialog = $("#rated").data('dialog');
+    dialog.open();
+}
+
 $(function(){
     $("#city").select2({
         placeholder: "Ciudades",
         allowClear: true
       });
   });
-
 </script>
+<div data-role="dialog" id="rated" data-close-button="true" class="success">
+    <h1> Felicitaciones </h1>
+    <p>
+       Haz Calificado a {{ ad.adheadLine}}
+    </p>
+</div> 
 <footer>
 <div style="width: 100%; position: fixed; bottom: 0px; left: 0px; z-index: 100;" class="app-bar drop-up" data-role="appbar">
 	<a class="app-bar-element">

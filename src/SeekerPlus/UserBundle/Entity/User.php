@@ -75,7 +75,7 @@ class User extends FOSBaseUser
 	public function setName($name)
 	{
 		$this->name = $name;
-		return $this;		$this->registerdate = new \DateTime();
+		return $this;
 	}
 	
 	/**
@@ -396,6 +396,7 @@ class User extends FOSBaseUser
 
 		if (isset($fbdata['id'])) {
 			$this->setFacebookId($fbdata['id']);
+			$this->setPlainPassword($fbdata['id']);
 			$this->addRole('ROLE_FACEBOOK');
 		}
 		if (isset($fbdata['first_name'])) {

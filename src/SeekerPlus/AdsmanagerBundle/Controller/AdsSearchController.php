@@ -29,7 +29,7 @@ class AdsSearchController extends Controller
         $request = $this->container->get('request');
         $texto = $request->request->get('texto');
         $ciudad = $request->request->get('pais');
-        $cantidad_resultados = 10;
+        $quantity_result = 10;
         
         $repo = $this->getDoctrine()->getManager();
         
@@ -38,31 +38,31 @@ class AdsSearchController extends Controller
                where a.metadataKeywords LIKE :title or a.name Like :name')
                 ->setParameter('title', '%'.$texto.'%')
                 ->setParameter('name', '%'.$texto.'%')
-                ->setMaxResults($cantidad_resultados);
-        $categorias = $query->getResult();
+                ->setMaxResults($quantity_result);
+        $categories = $query->getResult();
 
-        $cantidad_resultados = $cantidad_resultados - count($categorias);
+        $quantity_result = $quantity_result - count($categories);
         
         $query = $repo->createQuery('
                select a from AdsmanagerBundle:AdsmanagerAds a 
-               where a.adKeywords LIKE :key or a.adHeadline LIKE :title and a.adLocation = :ciudad')
+               where (a.adKeywords LIKE :key or a.adHeadline LIKE :title) and a.adLocation = :ciudad')
                 ->setParameter('key', '%'.$texto.'%')
                 ->setParameter('title', '%'.$texto.'%')
                 ->setParameter('ciudad', $ciudad)
-                ->setMaxResults($cantidad_resultados);
+                ->setMaxResults($quantity_result);
         $ads = $query->getResult();
         
-        $cantidad_resultados = $cantidad_resultados - count($ads);
+        $quantity_result = $quantity_result - count($ads);
         
         $query = $repo->createQuery('
-               select a from AdsmanagerBundle:AdsmanagerProduct a, AdsmanagerBundle:AdsmanagerAds b
+               select a.id, a.name, a.description, a.price, a.images, a.idAd from AdsmanagerBundle:AdsmanagerProduct a, AdsmanagerBundle:AdsmanagerAds b
                where a.name LIKE :name and a.idAd = b.id and b.adLocation = :ciudad')
                 ->setParameter('name', '%'.$texto.'%')
                 ->setParameter('ciudad', $ciudad)
-                ->setMaxResults($cantidad_resultados);
+                ->setMaxResults($quantity_result);
         $products = $query->getResult();
 
-        return $this->render('AdsmanagerBundle:AdsSearch:lista.html.twig', array("ads"=>$ads,"categorias"=>$categorias,"products"=>$products, "pais"=>$ciudad));
+        return $this->render('AdsmanagerBundle:AdsSearch:lista.html.twig', array("ads"=>$ads,"categories"=>$categories,"products"=>$products));
     }
 
     public function searchCategoryAction($idCategory,$idCity,$latitude,$longitude,$range,Request $request)

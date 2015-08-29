@@ -2,7 +2,7 @@
 	
 	<ul >
 
-		{% for item in categorias %}
+		{% for item in categories %}
 		    <li><a href="{{ path('search_ads_category',{'idCategory' : item.id, 'idCity': '3', 'latitude' : '0', 'longitude' : '0' ,'range' : '0'}) }}">{{ item.name }}</a></li>
 		{% endfor %}
 		{% for item in ads %}
@@ -11,6 +11,5 @@
 		{% for item in products %}
 		    <li><a href="#">{{ item.name }}</a></li>
 		{% endfor %}
-		<li>ciudad:  {{ pais }}</li>
 	</ul>    
 {% endblock %}

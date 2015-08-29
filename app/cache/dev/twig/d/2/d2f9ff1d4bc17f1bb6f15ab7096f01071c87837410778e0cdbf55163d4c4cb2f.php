@@ -29,7 +29,7 @@ class __TwigTemplate_d2f9ff1d4bc17f1bb6f15ab7096f01071c87837410778e0cdbf55163d4c
 \t\t";
         // line 5
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["categorias"]) ? $context["categorias"] : $this->getContext($context, "categorias")));
+        $context['_seq'] = twig_ensure_traversable((isset($context["categories"]) ? $context["categories"] : $this->getContext($context, "categories")));
         foreach ($context['_seq'] as $context["_key"] => $context["item"]) {
             // line 6
             echo "\t\t    <li><a href=\"";
@@ -71,10 +71,7 @@ class __TwigTemplate_d2f9ff1d4bc17f1bb6f15ab7096f01071c87837410778e0cdbf55163d4c
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['item'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
         // line 14
-        echo "\t\t<li>ciudad:  ";
-        echo twig_escape_filter($this->env, (isset($context["pais"]) ? $context["pais"] : $this->getContext($context, "pais")), "html", null, true);
-        echo "</li>
-\t</ul>    
+        echo "\t</ul>    
 ";
     }
 

@@ -3074,7 +3074,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>55e08ee8cb4cd</argument>
+            <argument>55e1b8f392075</argument>
           </service>
         </argument>
       </argument>
@@ -3449,7 +3449,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>55e08ee8cb4cd</argument>
+            <argument>55e1b8f392075</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -4114,6 +4114,10 @@
           <call method="addCustomNumericFunction">
             <argument>sin</argument>
             <argument>Swis\Bundle\DatabaseExtraBundle\DQL\Sin</argument>
+          </call>
+          <call method="addCustomNumericFunction">
+            <argument>round</argument>
+            <argument>Swis\Bundle\DatabaseExtraBundle\DQL\Round</argument>
           </call>
         </service>
       </argument>
