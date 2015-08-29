@@ -177,12 +177,21 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
                 }
 
                 // search_ads_category
-                if (0 === strpos($pathinfo, '/app/search/category') && preg_match('#^/app/search/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<latitude>[^/]++)/(?P<longitude>[^/]++)/(?P<range>[^/]++)/?$#s', $pathinfo, $matches)) {
+                if (0 === strpos($pathinfo, '/app/search/category') && preg_match('#^/app/search/category/(?P<idCategory>[^/]++)/(?P<idCity>[^/]++)/(?P<range>[^/]++)/?$#s', $pathinfo, $matches)) {
                     if (substr($pathinfo, -1) !== '/') {
                         return $this->redirect($pathinfo.'/', 'search_ads_category');
                     }
 
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'search_ads_category')), array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsSearchController::searchCategoryAction',));
+                }
+
+                // search_save
+                if (rtrim($pathinfo, '/') === '/app/search/save') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'search_save');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsSearchController::searchSaveAction',  '_route' => 'search_save',);
                 }
 
             }

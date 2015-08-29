@@ -100,7 +100,7 @@ class __TwigTemplate_d73da21983ab8f67f69cbe5423c579f1fab0ef20408c7481d2c05601ae2
 \t";
         // line 26
         $this->displayBlock('body', $context, $blocks);
-        // line 171
+        // line 186
         echo "</html>";
     }
 
@@ -174,28 +174,33 @@ class __TwigTemplate_d73da21983ab8f67f69cbe5423c579f1fab0ef20408c7481d2c05601ae2
 \t\$(window).load(function () {
 \t\$('#load').remove();
 });
-\tfunction Buscar(){
-\t\tvar texto = \$(\"#searchWord\").val();
-\t\tvar pais = 0;
+\tfunction Search(){
+\t\tvar text = \$(\"#searchWord\").val();
+\t\tvar city = 0;
+\t\tvar id_city = 0;
 \t\t
 \t\t";
-        // line 154
+        // line 155
         if ($this->getAttribute((isset($context["location"]) ? $context["location"] : null), "id", array(), "any", true, true)) {
-            // line 155
-            echo "    \t\tpais = '";
+            // line 156
+            echo "    \t\tcity = '";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "title", array()), "html", null, true);
+            echo "';
+    \t\tid_city = '";
+            // line 157
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()), "html", null, true);
             echo "';
 \t\t";
         }
-        // line 156
+        // line 158
         echo "    
 \t\t\$.ajax({
 \t\t\ttype: \"POST\",
 \t\t\turl: \"";
-        // line 159
+        // line 161
         echo $this->env->getExtension('routing')->getPath("search_ads");
         echo "\",
-\t\t\tdata: {texto: texto, pais: pais},
+\t\t\tdata: { texto: text, city: city, id_city: id_city},
 \t\t}).done(function( msg )
 \t\t{
 \t\t\t\$(\"#opciones\").html(msg);
@@ -203,6 +208,22 @@ class __TwigTemplate_d73da21983ab8f67f69cbe5423c579f1fab0ef20408c7481d2c05601ae2
 \t\t
 \t}
 
+\tfunction SaveSearh(title, path){
+\t\tvar write = \$(\"#searchWord\").val();
+\t\t\$.ajax({
+\t\t\ttype: \"POST\",
+\t\t\turl: \"";
+        // line 174
+        echo $this->env->getExtension('routing')->getPath("search_save");
+        echo "\",
+\t\t\tdata: { title: title, write: write},
+\t\t}).done(function( msg )
+\t\t{
+\t\t\twindow.location = path;
+\t\t})
+\t\t
+\t\t
+\t}
 </script>
 </body>
 ";
@@ -229,7 +250,7 @@ class __TwigTemplate_d73da21983ab8f67f69cbe5423c579f1fab0ef20408c7481d2c05601ae2
         if (array_key_exists("cities", $context)) {
             // line 51
             echo "\t\t<div style=\"display: block; float: left;\" class=\"input-control text\" data-role=\"input\">
-\t\t    <input id=\"searchWord\" style=\"width: 20rem;padding-right: 1rem !important;background: #fff\" type=\"text\" placeholder=\"Buscar ...\" onkeyup=\"Buscar()\">
+\t\t    <input id=\"searchWord\" style=\"width: 20rem;padding-right: 1rem !important;background: #fff\" type=\"text\" placeholder=\"Buscar ...\" onkeyup=\"Search()\">
 \t\t    <div id=\"opciones\" class=\"buscador-container\" style=\"\"></div>
 \t\t    <button class=\"button\"><span class=\"mif-search\"></span></button>
 \t\t</div>
@@ -418,6 +439,6 @@ class __TwigTemplate_d73da21983ab8f67f69cbe5423c579f1fab0ef20408c7481d2c05601ae2
 
     public function getDebugInfo()
     {
-        return array (  404 => 142,  401 => 141,  396 => 138,  386 => 134,  381 => 131,  377 => 130,  367 => 126,  362 => 123,  358 => 122,  348 => 118,  343 => 115,  339 => 114,  329 => 110,  324 => 107,  320 => 106,  317 => 105,  311 => 101,  300 => 93,  294 => 90,  281 => 79,  272 => 73,  266 => 70,  260 => 67,  254 => 64,  248 => 61,  245 => 60,  243 => 59,  240 => 58,  231 => 51,  229 => 50,  222 => 46,  218 => 45,  215 => 44,  212 => 43,  196 => 159,  191 => 156,  185 => 155,  183 => 154,  172 => 145,  170 => 141,  167 => 140,  165 => 105,  162 => 104,  160 => 43,  150 => 36,  145 => 34,  136 => 27,  133 => 26,  128 => 23,  123 => 16,  118 => 10,  113 => 8,  108 => 7,  104 => 171,  102 => 26,  98 => 24,  96 => 23,  92 => 22,  88 => 21,  84 => 20,  80 => 19,  76 => 18,  71 => 17,  69 => 16,  65 => 15,  61 => 14,  57 => 13,  53 => 12,  49 => 11,  45 => 10,  40 => 8,  36 => 7,  28 => 1,);
+        return array (  425 => 142,  422 => 141,  417 => 138,  407 => 134,  402 => 131,  398 => 130,  388 => 126,  383 => 123,  379 => 122,  369 => 118,  364 => 115,  360 => 114,  350 => 110,  345 => 107,  341 => 106,  338 => 105,  332 => 101,  321 => 93,  315 => 90,  302 => 79,  293 => 73,  287 => 70,  281 => 67,  275 => 64,  269 => 61,  266 => 60,  264 => 59,  261 => 58,  252 => 51,  250 => 50,  243 => 46,  239 => 45,  236 => 44,  233 => 43,  217 => 174,  201 => 161,  196 => 158,  191 => 157,  186 => 156,  184 => 155,  172 => 145,  170 => 141,  167 => 140,  165 => 105,  162 => 104,  160 => 43,  150 => 36,  145 => 34,  136 => 27,  133 => 26,  128 => 23,  123 => 16,  118 => 10,  113 => 8,  108 => 7,  104 => 186,  102 => 26,  98 => 24,  96 => 23,  92 => 22,  88 => 21,  84 => 20,  80 => 19,  76 => 18,  71 => 17,  69 => 16,  65 => 15,  61 => 14,  57 => 13,  53 => 12,  49 => 11,  45 => 10,  40 => 8,  36 => 7,  28 => 1,);
     }
 }

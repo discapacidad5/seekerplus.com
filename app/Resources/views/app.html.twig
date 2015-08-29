@@ -49,7 +49,7 @@
 	<div class="app-bar-divider"></div>
 	{% if cities is defined %}
 		<div style="display: block; float: left;" class="input-control text" data-role="input">
-		    <input id="searchWord" style="width: 20rem;padding-right: 1rem !important;background: #fff" type="text" placeholder="Buscar ..." onkeyup="Buscar()">
+		    <input id="searchWord" style="width: 20rem;padding-right: 1rem !important;background: #fff" type="text" placeholder="Buscar ..." onkeyup="Search()">
 		    <div id="opciones" class="buscador-container" style=""></div>
 		    <button class="button"><span class="mif-search"></span></button>
 		</div>
@@ -147,17 +147,19 @@
 	$(window).load(function () {
 	$('#load').remove();
 });
-	function Buscar(){
-		var texto = $("#searchWord").val();
-		var pais = 0;
+	function Search(){
+		var text = $("#searchWord").val();
+		var city = 0;
+		var id_city = 0;
 		
 		{% if location.id is defined %}
-    		pais = '{{ location.title }}';
+    		city = '{{ location.title }}';
+    		id_city = '{{ location.id }}';
 		{% endif %}    
 		$.ajax({
 			type: "POST",
 			url: "{{  path('search_ads') }}",
-			data: {texto: texto, pais: pais},
+			data: { texto: text, city: city, id_city: id_city},
 		}).done(function( msg )
 		{
 			$("#opciones").html(msg);
@@ -165,6 +167,19 @@
 		
 	}
 
+	function SaveSearh(title, path){
+		var write = $("#searchWord").val();
+		$.ajax({
+			type: "POST",
+			url: "{{  path('search_save') }}",
+			data: { title: title, write: write},
+		}).done(function( msg )
+		{
+			window.location = path;
+		})
+		
+		
+	}
 </script>
 </body>
 {% endblock %}

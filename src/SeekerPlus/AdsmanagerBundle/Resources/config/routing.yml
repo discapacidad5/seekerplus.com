@@ -50,5 +50,8 @@ search_ads:
     pattern:  /app/search/
     defaults: { _controller: AdsmanagerBundle:AdsSearch:search }
 search_ads_category:
-    pattern:  /app/search/category/{idCategory}/{idCity}/{latitude}/{longitude}/{range}/
+    pattern:  /app/search/category/{idCategory}/{idCity}/{range}/
     defaults: { _controller: AdsmanagerBundle:AdsSearch:searchCategory }
+search_save:
+    pattern:  /app/search/save/
+    defaults: { _controller: AdsmanagerBundle:AdsSearch:searchSave }
