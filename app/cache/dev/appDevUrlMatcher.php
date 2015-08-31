@@ -296,6 +296,57 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             }
 
+            if (0 === strpos($pathinfo, '/app/ad')) {
+                // ad_comment
+                if (rtrim($pathinfo, '/') === '/app/ad/ad_comment') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'ad_comment');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::adCommentAction',  '_route' => 'ad_comment',);
+                }
+
+                // edit_comment
+                if (rtrim($pathinfo, '/') === '/app/ad/edit_comment') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'edit_comment');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::editCommentAction',  '_route' => 'edit_comment',);
+                }
+
+            }
+
+            // delete_comment
+            if (rtrim($pathinfo, '/') === '/app/delete_comment') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'delete_comment');
+                }
+
+                return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::deleteCommentAction',  '_route' => 'delete_comment',);
+            }
+
+            if (0 === strpos($pathinfo, '/app/ad')) {
+                // date_comment
+                if (rtrim($pathinfo, '/') === '/app/ads/date_comment') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'date_comment');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::dateCommentAction',  '_route' => 'date_comment',);
+                }
+
+                // paginationAd
+                if (rtrim($pathinfo, '/') === '/app/ad/paginationAd') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'paginationAd');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::paginationAdAction',  '_route' => 'paginationAd',);
+                }
+
+            }
+
         }
 
         // _security_logout
