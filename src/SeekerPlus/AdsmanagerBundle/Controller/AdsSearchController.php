@@ -33,6 +33,9 @@ class AdsSearchController extends Controller
 
         $quantity_result = 10;
         
+        if($texto == ''){
+            return new Response('<ul></ul>');
+        }
         $repo = $this->getDoctrine()->getManager();
         
         $query = $repo->createQuery('
