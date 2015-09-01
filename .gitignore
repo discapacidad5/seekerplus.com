@@ -5,3 +5,5 @@ symphony/
 workspace/uploads/
 install-log.txt
 /vendor/
+app/cache/*
+app/logs/*
