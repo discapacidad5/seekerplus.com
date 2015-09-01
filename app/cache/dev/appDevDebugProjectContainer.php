@@ -2889,7 +2889,7 @@ class appDevDebugProjectContainer extends Container
         $u = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($g, $p, array(), $a);
         $u->setOptions(array('login_path' => 'fos_user_security_login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'));
 
-        return $this->services['security.firewall.map.context.public'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($o, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($d, array(0 => new \Symfony\Component\Security\Core\User\ChainUserProvider(array(0 => $b, 1 => $c)), 1 => $b, 2 => $c), 'public', $a, $e), 2 => $q, 3 => new \FOS\FacebookBundle\Security\Firewall\FacebookListener($d, $h, $i, $p, 'public', $r, $s, array('app_url' => 'https://apps.facebook.com/seekerplus', 'server_url' => 'http://localhost/SeekerPlusWeb/web/app_dev.php/', 'check_path' => '_security_check', 'use_forward' => false, 'require_previous_session' => true, 'display' => 'page', 'create_user_if_not_exists' => false, 'redirect_to_facebook_login' => true), $a, $e), 4 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($d, $h, $i, $p, 'public', $t, $u, array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $e, NULL), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($d, '55e5b86886d36', $a, $h), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($d, $this->get('security.access.decision_manager'), $o, $h)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($d, $this->get('security.authentication.trust_resolver'), $p, 'public', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($g, $p, 'fos_user_security_login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.public'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($o, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($d, array(0 => new \Symfony\Component\Security\Core\User\ChainUserProvider(array(0 => $b, 1 => $c)), 1 => $b, 2 => $c), 'public', $a, $e), 2 => $q, 3 => new \FOS\FacebookBundle\Security\Firewall\FacebookListener($d, $h, $i, $p, 'public', $r, $s, array('app_url' => 'https://apps.facebook.com/seekerplus', 'server_url' => 'http://localhost/SeekerPlusWeb/web/app_dev.php/', 'check_path' => '_security_check', 'use_forward' => false, 'require_previous_session' => true, 'display' => 'page', 'create_user_if_not_exists' => false, 'redirect_to_facebook_login' => true), $a, $e), 4 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($d, $h, $i, $p, 'public', $t, $u, array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $e, NULL), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($d, '55e5e195a8f41', $a, $h), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($d, $this->get('security.access.decision_manager'), $o, $h)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($d, $this->get('security.authentication.trust_resolver'), $p, 'public', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($g, $p, 'fos_user_security_login', false), NULL, NULL, $a));
     }
 
     /**
@@ -3307,15 +3307,15 @@ class appDevDebugProjectContainer extends Container
     protected function getSwiftmailer_Mailer_Default_Transport_RealService()
     {
         $a = new \Swift_Transport_Esmtp_AuthHandler(array(0 => new \Swift_Transport_Esmtp_Auth_CramMd5Authenticator(), 1 => new \Swift_Transport_Esmtp_Auth_LoginAuthenticator(), 2 => new \Swift_Transport_Esmtp_Auth_PlainAuthenticator()));
-        $a->setUsername(NULL);
-        $a->setPassword(NULL);
-        $a->setAuthMode(NULL);
+        $a->setUsername('ricaurtefernando01@gmail.com');
+        $a->setPassword('genesis00');
+        $a->setAuthMode('login');
 
         $this->services['swiftmailer.mailer.default.transport.real'] = $instance = new \Swift_Transport_EsmtpTransport(new \Swift_Transport_StreamBuffer(new \Swift_StreamFilters_StringReplacementFilterFactory()), array(0 => $a), $this->get('swiftmailer.mailer.default.transport.eventdispatcher'));
 
-        $instance->setHost('127.0.0.1');
-        $instance->setPort(25);
-        $instance->setEncryption(NULL);
+        $instance->setHost('smtp.gmail.com');
+        $instance->setPort(465);
+        $instance->setEncryption('ssl');
         $instance->setTimeout(30);
         $instance->setSourceIp(NULL);
 
@@ -4556,7 +4556,7 @@ class appDevDebugProjectContainer extends Container
     {
         $a = $this->get('security.user_checker');
 
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \FOS\FacebookBundle\Security\Authentication\Provider\FacebookProvider('public', $this->get('fos_facebook.api'), $this->get('my.facebook.user'), $a, false), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_manager'), $a, 'public', $this->get('security.encoder_factory'), true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('55e5b86886d36')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \FOS\FacebookBundle\Security\Authentication\Provider\FacebookProvider('public', $this->get('fos_facebook.api'), $this->get('my.facebook.user'), $a, false), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_manager'), $a, 'public', $this->get('security.encoder_factory'), true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('55e5e195a8f41')), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -4770,10 +4770,10 @@ class appDevDebugProjectContainer extends Container
             'database_name' => 'seekerplusJokte',
             'database_user' => 'root',
             'database_password' => 'toor',
-            'mailer_transport' => 'smtp',
-            'mailer_host' => '127.0.0.1',
-            'mailer_user' => NULL,
-            'mailer_password' => NULL,
+            'mailer_transport' => 'gmail',
+            'mailer_host' => 'stmp.gmail.com',
+            'mailer_user' => 'ricaurtefernando01@gmail.com',
+            'mailer_password' => 'genesis00',
             'locale' => 'es',
             'secret' => '4311c47452e370f6b8f9dad13222508544c6ff2a',
             'location' => 'Fusagasuga, Cundinamarca',
@@ -5186,12 +5186,12 @@ class appDevDebugProjectContainer extends Container
             'swiftmailer.data_collector.class' => 'Symfony\\Bundle\\SwiftmailerBundle\\DataCollector\\MessageDataCollector',
             'swiftmailer.mailer.default.transport.name' => 'smtp',
             'swiftmailer.mailer.default.delivery.enabled' => true,
-            'swiftmailer.mailer.default.transport.smtp.encryption' => NULL,
-            'swiftmailer.mailer.default.transport.smtp.port' => 25,
-            'swiftmailer.mailer.default.transport.smtp.host' => '127.0.0.1',
-            'swiftmailer.mailer.default.transport.smtp.username' => NULL,
-            'swiftmailer.mailer.default.transport.smtp.password' => NULL,
-            'swiftmailer.mailer.default.transport.smtp.auth_mode' => NULL,
+            'swiftmailer.mailer.default.transport.smtp.encryption' => 'ssl',
+            'swiftmailer.mailer.default.transport.smtp.port' => 465,
+            'swiftmailer.mailer.default.transport.smtp.host' => 'smtp.gmail.com',
+            'swiftmailer.mailer.default.transport.smtp.username' => 'ricaurtefernando01@gmail.com',
+            'swiftmailer.mailer.default.transport.smtp.password' => 'genesis00',
+            'swiftmailer.mailer.default.transport.smtp.auth_mode' => 'login',
             'swiftmailer.mailer.default.transport.smtp.timeout' => 30,
             'swiftmailer.mailer.default.transport.smtp.source_ip' => NULL,
             'swiftmailer.spool.default.memory.path' => (__DIR__.'/swiftmailer/spool/default'),

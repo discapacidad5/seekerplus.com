@@ -245,6 +245,15 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
                     return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::paginationAdAction',  '_route' => 'paginationAd',);
                 }
 
+                // emailAds
+                if (rtrim($pathinfo, '/') === '/app/ad/emailAds') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'emailAds');
+                    }
+
+                    return array (  '_controller' => 'SeekerPlus\\AdsmanagerBundle\\Controller\\AdsController::emailAdsAction',  '_route' => 'emailAds',);
+                }
+
             }
 
         }

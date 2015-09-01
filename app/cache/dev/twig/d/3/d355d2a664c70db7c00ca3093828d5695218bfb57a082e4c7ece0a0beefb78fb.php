@@ -243,15 +243,16 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t    \t<ul class=\"tabs\">
 \t\t       \t\t<li><a href=\"#frame_1_1\">Productos y/o Servicios</a></li>
 \t\t            <li><a href=\"#frame_1_2\">Comentarios</a></li>
+\t\t            <li><a href=\"#frame_1_3\">Contacto</a></li>
 \t\t        </ul>
 \t\t        <div class=\"frames bg-grayLight\">
 \t\t        \t<div class=\"frame\" id=\"frame_1_1\" style=\"background-color: rgb(255, 255, 255);\">
 \t\t\t        \t";
-        // line 96
+        // line 97
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "getProducts", array()));
         foreach ($context['_seq'] as $context["_key"] => $context["product"]) {
-            // line 97
+            // line 98
             echo "\t\t\t\t\t\t\t<div class=\"cell\">
 \t\t\t\t\t\t\t\t<div class=\"listview\">
 \t\t\t\t\t\t\t    \t<div style=\"border: 1px solid #EAEAEA;width: 100%;height: auto;position: relative;display: block;cursor: pointer;
@@ -259,15 +260,15 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t\t\t\t\t\t         <div style=\"margin-left: -3rem;padding: 10px 10px 10px 0rem;position: relative;display: block;color: inherit;\" 
 \t\t\t\t\t\t\t         class=\"list-content\">
 \t\t\t\t\t\t\t\t\t\t";
-            // line 103
+            // line 104
             if (($this->getAttribute($context["product"], "images", array()) == "noImages.jpg")) {
-                // line 104
+                // line 105
                 echo "\t\t\t\t\t\t\t            \t<img style=\"margin-left: 1rem;display: block;width: 56px;height: 56px;font-size: 40px;float: left;margin-right: 10px;\" src=\"";
                 echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/noImages.jpg"), "html", null, true);
                 echo "\" class=\"icon\">
 \t\t\t\t\t\t\t\t\t\t";
             } else {
-                // line 106
+                // line 107
                 echo "\t\t\t\t\t\t\t\t\t\t    <img style=\"margin-left: 1rem;display: block;width: 56px;height: 56px;font-size: 40px;float: left;margin-right: 10px;\" src=\"";
                 echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/ids/"), "html", null, true);
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "id", array()), "html", null, true);
@@ -276,18 +277,18 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
                 echo "\" class=\"icon\">
 \t\t\t\t\t\t\t\t\t\t";
             }
-            // line 108
+            // line 109
             echo "\t\t\t\t\t\t\t         <div class=\"data\">
 \t\t\t\t\t\t\t         \t<span style=\"font-size: 14px;line-height: 18px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;\" class=\"list-title\"><b>";
-            // line 109
+            // line 110
             echo twig_escape_filter($this->env, $this->getAttribute($context["product"], "name", array()), "html", null, true);
             echo "</b></b></span>
 \t\t\t\t\t\t\t         \t<span style=\"font-size: 11px;line-height: 14px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;\" class=\"list-remark\">";
-            // line 110
+            // line 111
             echo twig_escape_filter($this->env, $this->getAttribute($context["product"], "description", array()), "html", null, true);
             echo "</span>
 \t\t\t\t\t\t        \t\t<span style=\"font-size: 11px;line-height: 14px;margin: 0px;padding: 0px;display: block;overflow: hidden;text-overflow: ellipsis;\" class=\"list-remark\">\$ ";
-            // line 111
+            // line 112
             echo twig_escape_filter($this->env, twig_number_format_filter($this->env, $this->getAttribute($context["product"], "price", array()), 0), "html", null, true);
             echo "</span>
 \t\t\t\t\t\t\t         </div>
@@ -300,7 +301,7 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['product'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 117
+        // line 118
         echo " 
 \t\t        \t</div>
 \t\t            <div class=\"frame\" id=\"frame_1_2\" style=\"background-color: rgb(255, 255, 255);\">
@@ -333,24 +334,24 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
                                   <div class=\"comments-container\">
 \t\t<ul id=\"comments-list\" class=\"comments-list\">
              <li>Comentarios <small id=\"ncomment\">(";
-        // line 148
+        // line 149
         echo twig_escape_filter($this->env, (isset($context["nComments"]) ? $context["nComments"] : $this->getContext($context, "nComments")), "html", null, true);
         echo ")  </small> <span class=\"mif-bubbles\"></span></li>
 \t\t\t\t\t";
-        // line 149
+        // line 150
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["coments"]) ? $context["coments"] : $this->getContext($context, "coments")));
         foreach ($context['_seq'] as $context["_key"] => $context["row"]) {
-            // line 150
+            // line 151
             echo "\t\t\t\t\t
 \t\t\t\t\t<li  id=\"";
-            // line 151
+            // line 152
             echo twig_escape_filter($this->env, $this->getAttribute($context["row"], "id", array()), "html", null, true);
             echo "\">
 \t\t\t\t\t\t<div class=\"comment-main-level\">
 \t\t\t\t\t\t\t<!-- Avatar -->
 \t\t\t\t\t\t\t<div class=\"comment-avatar\"><img src=\"";
-            // line 154
+            // line 155
             echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/male.png"), "html", null, true);
             echo "\" alt=\"\">
 \t\t\t\t\t\t\t</div>
@@ -359,30 +360,30 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t\t\t\t\t\t\t<div class=\"comment-head\">
 \t\t\t\t\t\t\t\t\t<h6 class=\"comment-name \">
 \t\t\t\t\t\t\t\t\t";
-            // line 160
+            // line 161
             $context['_parent'] = (array) $context;
             $context['_seq'] = twig_ensure_traversable((isset($context["users"]) ? $context["users"] : $this->getContext($context, "users")));
             foreach ($context['_seq'] as $context["_key"] => $context["row2"]) {
-                // line 161
+                // line 162
                 echo "\t\t\t\t\t\t\t\t\t";
                 if (($this->getAttribute($context["row2"], "id", array()) == $this->getAttribute($context["row"], "idUser", array()))) {
-                    // line 162
+                    // line 163
                     echo "\t\t\t\t\t\t                      <a href=\"\">";
                     echo twig_escape_filter($this->env, $this->getAttribute($context["row2"], "name", array()), "html", null, true);
                     echo "</a>
 \t\t\t\t\t\t\t\t\t";
                 }
-                // line 164
+                // line 165
                 echo "\t\t\t\t\t\t\t\t\t   
 \t\t\t\t\t\t\t\t\t";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['row2'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 166
+            // line 167
             echo "\t\t\t\t\t\t\t\t\t</h6>
 \t\t\t\t\t\t\t\t\t<span>";
-            // line 167
+            // line 168
             echo twig_escape_filter($this->env, twig_date_format_filter($this->env, $this->getAttribute($context["row"], "dateCreated", array()), "m/d/Y"), "html", null, true);
             echo "</span>
 \t\t\t\t\t\t\t\t\t<i class=\"fa fa-reply\"></i>
@@ -390,21 +391,21 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t\t<div class=\"comment-content\">
 \t\t\t\t\t\t\t\t\t<p>";
-            // line 172
+            // line 173
             echo twig_escape_filter($this->env, $this->getAttribute($context["row"], "commentAd", array()), "html", null, true);
             echo "</p>
 \t\t\t\t\t\t
                                     ";
-            // line 174
+            // line 175
             if (($this->getAttribute($context["row"], "idUser", array()) == (isset($context["activeUser"]) ? $context["activeUser"] : $this->getContext($context, "activeUser")))) {
-                // line 175
+                // line 176
                 echo "
 \t\t\t\t\t\t\t\t\t   <button class=\"button warning \" onclick=\"dateComment(";
-                // line 176
+                // line 177
                 echo twig_escape_filter($this->env, $this->getAttribute($context["row"], "id", array()), "html", null, true);
                 echo ")\">Editar</button>
 \t\t\t\t\t\t\t\t\t   <button class=\"button color-red \" onclick=\"showMessageProductDeleteDialog(";
-                // line 177
+                // line 178
                 echo twig_escape_filter($this->env, $this->getAttribute($context["row"], "id", array()), "html", null, true);
                 echo ")\">Eliminar</button>
 
@@ -412,7 +413,7 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 
                                     ";
             }
-            // line 182
+            // line 183
             echo "\t\t\t\t\t\t\t\t\t
 
 \t\t\t\t\t\t\t\t</div>
@@ -420,15 +421,15 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t\t\t\t\t</div>
 \t\t\t\t\t\t</li>
                    ";
-            // line 188
-            $context["counter"] = ((isset($context["counter"]) ? $context["counter"] : $this->getContext($context, "counter")) + 1);
             // line 189
+            $context["counter"] = ((isset($context["counter"]) ? $context["counter"] : $this->getContext($context, "counter")) + 1);
+            // line 190
             echo "\t\t\t\t\t";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['row'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 190
+        // line 191
         echo "
 
 
@@ -442,13 +443,13 @@ var r=0;
 <div style=\"margin-bottom: 2rem;\">
 
 \t";
-        // line 202
+        // line 203
         if (((isset($context["counter"]) ? $context["counter"] : $this->getContext($context, "counter")) >= 9)) {
-            // line 203
+            // line 204
             echo "<button onclick=\"pagination(r=r+10)\" id=\"see\" class=\"button success\">Ver Mas</button>
 \t";
         }
-        // line 205
+        // line 206
         echo "
 
 
@@ -457,11 +458,11 @@ var r=0;
 \t
 function  pagination(range){
        var idAd=\"";
-        // line 212
+        // line 213
         echo twig_escape_filter($this->env, (isset($context["idAd"]) ? $context["idAd"] : $this->getContext($context, "idAd")), "html", null, true);
         echo "\";
        \$.post('";
-        // line 213
+        // line 214
         echo $this->env->getExtension('routing')->getPath("paginationAd");
         echo "',               
 \t\t\t         {idAd: idAd,
@@ -485,7 +486,7 @@ function  pagination(range){
 \t\t       lista.innerHTML += \"<li id=\"+response.comments[x].id+\">\"
 \t\t       +'<div class=\"comment-main-level\">'
 \t\t\t   +'<div class=\"comment-avatar\"><img src=\"";
-        // line 234
+        // line 235
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/male.png"), "html", null, true);
         echo "\" alt=\"\"></div>'
 \t\t\t   +'<div class=\"comment-box\">'
@@ -526,6 +527,70 @@ function  pagination(range){
 \t\t            </div>
 \t\t       </div>
 \t\t    </div>
+
+\t\t    <div class=\"frame\" id=\"frame_1_3\" style=\"background-color: rgb(255, 255, 255);\">
+             
+             
+
+
+
+
+<form href=\"";
+        // line 282
+        echo $this->env->getExtension('routing')->getPath("emailAds");
+        echo "\" method=\"post\">
+
+
+\t  <label class=\"header\">Contactar con  ";
+        // line 285
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "adHeadline", array()));
+        echo "</label>
+\t  <br>
+\t   <br>
+    <label class=\"sub-alt-header\">Asunto</label>
+    <br>
+    <div class=\"input-control text\" style=\"width:50%\">
+
+        <input type=\"text\" placeholder=\"Asunto\" class=\"sub-alt-header\" value=\"Lorem ipsum dolor sit amet \">
+    </div>
+         <br>
+    <label class=\"sub-alt-header\">Mensaje</label>
+\t<div class=\"textarea-div\">
+\t<div class=\"typearea\">
+\t\t<textarea placeholder=\"Escribe un Mensaje...\" id=\"textarea-expand\" class=\"custom-scroll sub-alt-header\"
+\t\t  >
+\t\t\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+\t\t\ttempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+\t\t\tquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+\t\t\tconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+\t\t\tcillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+\t\t\tproident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\t\t</textarea>
+\t</div>
+  
+    </div>
+     <br>
+    <button class=\"button primary\"><span class=\"mif-mail\"></span> Enviar</button>
+
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\t\t   </div>
 \t\t\t   
 \t</div>
 </div>
@@ -533,31 +598,31 @@ function  pagination(range){
 ";
     }
 
-    // line 278
+    // line 337
     public function block_footer($context, array $blocks = array())
     {
-        // line 279
+        // line 338
         echo "<div style=\"padding: 1rem;margin-top: -8rem;margin-left: -1.5rem;\" data-role=\"dialog\" id=\"cities\" data-close-button=\"true\" data-overlay=\"true\" data-overlay-color=\"op-dark\">
     <h2><span class=\"mif-earth mif\"></span> Seleccione Una Ciudad</h2>
     <p>
        \t    <div class=\"cell\">
 \t\t\t   <select id=\"city\" class=\"js-select\" data-placeholder=\"Ciudades\" style=\"width: 13rem;\" onchange=\"location = this.options[this.selectedIndex].value;\">
 \t\t\t      ";
-        // line 284
+        // line 343
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["cities"]) ? $context["cities"] : $this->getContext($context, "cities")));
         foreach ($context['_seq'] as $context["_key"] => $context["field"]) {
-            // line 285
+            // line 344
             echo "\t\t\t\t      ";
             if (($this->getAttribute($context["field"], "parentId", array()) == 0)) {
-                // line 286
+                // line 345
                 echo "\t\t\t\t\t  ";
             } else {
                 echo "\t
 \t\t\t\t\t\t   \t";
-                // line 287
+                // line 346
                 if (($this->getAttribute($context["field"], "title", array()) == $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "title", array()))) {
-                    // line 288
+                    // line 347
                     echo "\t\t\t\t\t       \t\t<option value='";
                     echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("ads_city", array("city" => $this->getAttribute($context["field"], "id", array()))), "html", null, true);
                     echo "' selected>";
@@ -565,7 +630,7 @@ function  pagination(range){
                     echo "</option>
 \t\t\t\t\t        ";
                 } else {
-                    // line 290
+                    // line 349
                     echo "\t\t\t\t\t            <option value='";
                     echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("ads_city", array("city" => $this->getAttribute($context["field"], "id", array()))), "html", null, true);
                     echo "'>";
@@ -573,7 +638,7 @@ function  pagination(range){
                     echo "</option>
 \t\t\t\t\t\t   \t";
                 }
-                // line 292
+                // line 351
                 echo "\t\t\t\t\t   ";
             }
             echo "\t
@@ -582,7 +647,7 @@ function  pagination(range){
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['field'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 294
+        // line 353
         echo "\t\t\t   </select>
 \t\t\t</div>
     </p>
@@ -595,11 +660,11 @@ function showCitiesDialog(){
 
 function adRate(value, star, widget){
     \$.post('";
-        // line 305
+        // line 364
         echo $this->env->getExtension('routing')->getPath("adRate");
         echo "',               
             {idAd: ";
-        // line 306
+        // line 365
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "id", array()));
         echo ", rate:value}, 
         \tfunction(response){
@@ -630,7 +695,7 @@ function showMessageAdRate(){
     <h1> Felicitaciones </h1>
     <p>
        Haz Calificado a ";
-        // line 334
+        // line 393
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "adheadLine", array()), "html", null, true);
         echo "
     </p>
@@ -706,11 +771,11 @@ function showMessageAdRate(){
 \t\t\t\t\t\t}
 \t\t\t\t\t\telse{
 \t\t    \$.post('";
-        // line 407
+        // line 466
         echo $this->env->getExtension('routing')->getPath("ad_comment");
         echo "',               
 \t\t            {idAd: ";
-        // line 408
+        // line 467
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "id", array()));
         echo ",
 \t\t            comment: JSON.stringify(commentUser)
@@ -724,7 +789,7 @@ function showMessageAdRate(){
 \t\t       lista.innerHTML += \"<li id=\"+response.idc+\">\"
 \t\t       +'<div class=\"comment-main-level\">'
 \t\t\t   +'<div class=\"comment-avatar\"><img src=\"";
-        // line 419
+        // line 478
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/male.png"), "html", null, true);
         echo "\" alt=\"\"></div>'
 \t\t\t   +'<div class=\"comment-box\">'
@@ -757,7 +822,7 @@ function showMessageAdRate(){
 \t\tfunction dateComment(id)
 \t\t{
 \t  \$.post('";
-        // line 449
+        // line 508
         echo $this->env->getExtension('routing')->getPath("date_comment");
         echo "',               
 \t         {idComment: id,
@@ -778,7 +843,7 @@ function showMessageAdRate(){
 \t\t\t\t\t\t}
 \t\t\t\t\t\telse{
         \t\t \$.post('";
-        // line 467
+        // line 526
         echo $this->env->getExtension('routing')->getPath("edit_comment");
         echo "',               
                     {idComment: id, newComment :JSON.stringify(editcomment)
@@ -794,15 +859,17 @@ function showMessageAdRate(){
        \t\tfunction delete_ad(id)
        \t\t\t\t{
 \t\t\t\$.post('";
-        // line 480
+        // line 539
         echo $this->env->getExtension('routing')->getPath("delete_comment");
         echo "',               
 \t\t\t         {idComment: id,
 \t\t\t        }, 
 \t\t\t        \tfunction(response){
 \t\t\t        \t\t \$(\"#\"+id).remove();
-\t\t\t                delMessageProductDeleteDialog();
-
+\t\t\t        \t\t \$('#ncomment').html(\"(\"+response.n+\")\");
+\t\t\t                 delMessageProductDeleteDialog();
+\t\t\t                
+                         
 \t\t\t\t}, \"json\"); 
 \t\t\t} 
 </script>
@@ -815,48 +882,48 @@ function showMessageAdRate(){
            <div class=\"app-bar-drop-container\" data-role=\"dropdown\" data-toggle-element=\"#toggle-tiles-dropdown2\" data-no-close=\"false\" style=\"width: 324px; display: none;\">
               <div class=\"tile-container bg-white fg-black\">
               \t\t";
-        // line 498
+        // line 559
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["categories"]) ? $context["categories"] : $this->getContext($context, "categories")));
         foreach ($context['_seq'] as $context["_key"] => $context["field"]) {
-            // line 499
+            // line 560
             echo "\t\t\t\t      ";
             if (($this->getAttribute($context["field"], "parent", array()) == 0)) {
-                // line 500
+                // line 561
                 echo "\t\t\t\t\t  <div onclick=\"location='";
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_category", array("idCategory" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()), "latitude" => 0, "longitude" => 0, "range" => 0)), "html", null, true);
                 echo "';\" class=\"tile-small\" style=\"background: rgb(255, 255, 255) none repeat scroll 0% 0%;\">
 \t\t\t\t\t    <div class=\"tile-content iconic\">
 \t\t\t\t       \t\t<img style=\"width: 100%;height: 70%;\" alt=\"\" src=\"";
-                // line 502
+                // line 563
                 echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("../"), "html", null, true);
                 echo "images/com_adsmanager/categories/";
                 echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "id", array()));
                 echo "cat.png\">
 \t\t\t\t       \t<p class=\"pCategories\" style=\"margin-top: -1.1rem;text-align: center;\">";
-                // line 503
+                // line 564
                 echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "name", array()), "html", null, true);
                 echo "</p>
 \t\t\t\t       \t</div>
               \t\t  </div>
 \t\t\t\t\t  ";
             } else {
-                // line 506
+                // line 567
                 echo "\t 
 \t\t\t\t       ";
             }
-            // line 508
+            // line 569
             echo "\t\t\t       ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['field'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 509
+        // line 570
         echo "            </div>
           </div>
   \t</a>
  \t<a href=\"";
-        // line 512
+        // line 573
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_ad_map", array("idAd" => $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()))), "html", null, true);
         echo "\" class=\"app-bar-element\" style=\"margin-left: 12%\">
     \t<span id=\"toggle-tiles-dropdown2\" class=\"mif-map mif-2x\"></span>
@@ -881,6 +948,6 @@ function showMessageAdRate(){
 
     public function getDebugInfo()
     {
-        return array (  860 => 512,  855 => 509,  849 => 508,  845 => 506,  838 => 503,  832 => 502,  826 => 500,  823 => 499,  819 => 498,  798 => 480,  782 => 467,  761 => 449,  728 => 419,  714 => 408,  710 => 407,  634 => 334,  603 => 306,  599 => 305,  586 => 294,  577 => 292,  569 => 290,  561 => 288,  559 => 287,  554 => 286,  551 => 285,  547 => 284,  540 => 279,  537 => 278,  489 => 234,  465 => 213,  461 => 212,  452 => 205,  448 => 203,  446 => 202,  432 => 190,  426 => 189,  424 => 188,  416 => 182,  408 => 177,  404 => 176,  401 => 175,  399 => 174,  394 => 172,  386 => 167,  383 => 166,  376 => 164,  370 => 162,  367 => 161,  363 => 160,  354 => 154,  348 => 151,  345 => 150,  341 => 149,  337 => 148,  304 => 117,  291 => 111,  287 => 110,  283 => 109,  280 => 108,  271 => 106,  265 => 104,  263 => 103,  255 => 97,  251 => 96,  239 => 87,  233 => 84,  228 => 81,  222 => 79,  218 => 77,  216 => 76,  205 => 67,  198 => 65,  195 => 64,  193 => 63,  190 => 62,  183 => 60,  180 => 59,  178 => 58,  173 => 55,  168 => 53,  165 => 52,  163 => 51,  158 => 48,  153 => 46,  150 => 45,  148 => 44,  144 => 42,  138 => 40,  136 => 39,  132 => 37,  123 => 35,  117 => 33,  115 => 32,  105 => 24,  103 => 23,  99 => 22,  96 => 21,  90 => 19,  85 => 18,  82 => 17,  76 => 15,  71 => 14,  65 => 11,  60 => 10,  53 => 7,  48 => 6,  45 => 5,  39 => 3,  34 => 2,  11 => 1,);
+        return array (  927 => 573,  922 => 570,  916 => 569,  912 => 567,  905 => 564,  899 => 563,  893 => 561,  890 => 560,  886 => 559,  863 => 539,  847 => 526,  826 => 508,  793 => 478,  779 => 467,  775 => 466,  699 => 393,  668 => 365,  664 => 364,  651 => 353,  642 => 351,  634 => 349,  626 => 347,  624 => 346,  619 => 345,  616 => 344,  612 => 343,  605 => 338,  602 => 337,  546 => 285,  540 => 282,  490 => 235,  466 => 214,  462 => 213,  453 => 206,  449 => 204,  447 => 203,  433 => 191,  427 => 190,  425 => 189,  417 => 183,  409 => 178,  405 => 177,  402 => 176,  400 => 175,  395 => 173,  387 => 168,  384 => 167,  377 => 165,  371 => 163,  368 => 162,  364 => 161,  355 => 155,  349 => 152,  346 => 151,  342 => 150,  338 => 149,  305 => 118,  292 => 112,  288 => 111,  284 => 110,  281 => 109,  272 => 107,  266 => 105,  264 => 104,  256 => 98,  252 => 97,  239 => 87,  233 => 84,  228 => 81,  222 => 79,  218 => 77,  216 => 76,  205 => 67,  198 => 65,  195 => 64,  193 => 63,  190 => 62,  183 => 60,  180 => 59,  178 => 58,  173 => 55,  168 => 53,  165 => 52,  163 => 51,  158 => 48,  153 => 46,  150 => 45,  148 => 44,  144 => 42,  138 => 40,  136 => 39,  132 => 37,  123 => 35,  117 => 33,  115 => 32,  105 => 24,  103 => 23,  99 => 22,  96 => 21,  90 => 19,  85 => 18,  82 => 17,  76 => 15,  71 => 14,  65 => 11,  60 => 10,  53 => 7,  48 => 6,  45 => 5,  39 => 3,  34 => 2,  11 => 1,);
     }
 }

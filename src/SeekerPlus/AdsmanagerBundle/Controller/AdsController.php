@@ -123,6 +123,30 @@ public function adCommentAction(Request $request){
 
    }
 
+
+     public function emailAdsAction(){
+             $dateTime = new \DateTime();
+             $date = $dateTime->format('d/m/y H:i:s');
+             $message = \Swift_Message::newInstance()
+            ->setSubject('Mensaje privado')
+            ->setFrom('fernando.ricaurte@hotmail.com')
+            ->setTo('fernando.ricaurte@hotmail.com')
+
+            ->setBody(
+                $this->renderView(
+                    'AdsmanagerBundle:Ads:email.html.twig',
+                     array('name' => "Fernando" ,'date' => $date)
+                    
+                )
+            ,'text / html')
+        ;
+        $this->get('mailer')->send($message);
+        
+        return $this->render('AdsmanagerBundle:Ads:email.html.twig', array('name' => 'hola','date' => $date));
+
+     }
+
+
    public function editCommentAction(Request $request){
     if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
         return $this->redirectToRoute('fos_user_security_login');
@@ -169,6 +193,7 @@ public function adCommentAction(Request $request){
          $comments = $query->getResult();
      }
 
+   
     $response = array("comment" => $comments );
  
         return new JsonResponse($response);
@@ -182,6 +207,8 @@ public function adCommentAction(Request $request){
         
         $userId = $this->get('security.context')->getToken()->getUser()->getId();
         $id_comment = json_decode($request->request->get('idComment'));
+   
+
 
         $userC=$this->getDoctrine()->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
         if ($userC->getIdUser() == $userId ) {
@@ -191,8 +218,15 @@ public function adCommentAction(Request $request){
              $em->remove($delete);
              $em->flush();
         }
+       $emComment = $this->getDoctrine()->getManager();
+        $queryn =  $emComment->createQuery('SELECT COUNT(a.idAds) FROM AdsmanagerBundle:AdsComments a 
+                                     Where a.idAds= :id')
+                                     ->setParameter('id',344);
+        $nComments = $queryn->getSingleScalarResult();
+        $nComments-1;
+ 
    
-       $response = array("idc" => $id_comment);
+       $response = array("idc" => $id_comment ,"n" =>  $nComments);
        return new JsonResponse($response);
 
 

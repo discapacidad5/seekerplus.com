@@ -142,6 +142,7 @@
   'FOSFacebookBundle::initialize.html.twig' => '/var/www/seekerplus.com/vendor/friendsofsymfony/facebook-bundle/FOS/FacebookBundle/Resources/views/initialize.html.twig',
   'FOSFacebookBundle::initialize.html.php' => '/var/www/seekerplus.com/vendor/friendsofsymfony/facebook-bundle/FOS/FacebookBundle/Resources/views/initialize.html.php',
   'AdsmanagerBundle:Map:ads.html.twig' => '/var/www/seekerplus.com/src/SeekerPlus/AdsmanagerBundle/Resources/views/Map/ads.html.twig',
+  'AdsmanagerBundle:Ads:email.html.twig' => '/var/www/seekerplus.com/src/SeekerPlus/AdsmanagerBundle/Resources/views/Ads/email.html.twig',
   'AdsmanagerBundle:Ads:myAds.html.twig' => '/var/www/seekerplus.com/src/SeekerPlus/AdsmanagerBundle/Resources/views/Ads/myAds.html.twig',
   'AdsmanagerBundle:Ads:editAds.html.twig' => '/var/www/seekerplus.com/src/SeekerPlus/AdsmanagerBundle/Resources/views/Ads/editAds.html.twig',
   'AdsmanagerBundle:Ads:dontExits.html.twig' => '/var/www/seekerplus.com/src/SeekerPlus/AdsmanagerBundle/Resources/views/Ads/dontExits.html.twig',
