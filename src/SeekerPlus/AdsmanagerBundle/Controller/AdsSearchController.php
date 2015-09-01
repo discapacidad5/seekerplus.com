@@ -34,7 +34,11 @@ class AdsSearchController extends Controller
         $quantity_result = 10;
         
         if($texto == ''){
+<<<<<<< HEAD
             return new Response('');
+=======
+            return new Response('<ul></ul>');
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
         }
         $repo = $this->getDoctrine()->getManager();
         
@@ -62,14 +66,20 @@ class AdsSearchController extends Controller
         $quantity_result = $quantity_result - count($ads);
         
         $query = $repo->createQuery('
+<<<<<<< HEAD
                select a.id, a.name, a.idAd, b.adHeadline from AdsmanagerBundle:AdsmanagerProduct a, AdsmanagerBundle:AdsmanagerAds b
                where a.name LIKE :name and a.idAd = b.id and b.adLocation = :city and b.published = 1 and b.expirationDate > :date group by b.adHeadline')
+=======
+               select a.id, a.name, a.idAd from AdsmanagerBundle:AdsmanagerProduct a, AdsmanagerBundle:AdsmanagerAds b
+               where a.name LIKE :name and a.idAd = b.id and b.adLocation = :city and b.published = 1 and b.expirationDate > :date')
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
                 ->setParameter('name', '%'.$texto.'%')
                 ->setParameter('city', $city)
                 ->setParameter('date', $date->format('Y-m-d'))
                 ->setMaxResults($quantity_result);
         $products = $query->getResult();
 
+<<<<<<< HEAD
         foreach ($products as $product) {
             foreach ($ads as $ads_uni) {
                 if($product['idAd'] == $ads_uni->getId()){
@@ -77,6 +87,8 @@ class AdsSearchController extends Controller
                 }
             }
         }
+=======
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
         return $this->render('AdsmanagerBundle:AdsSearch:lista.html.twig', array("ads"=>$ads,"categories"=>$categories,"products"=>$products, 'id_city' => $id_city));
     }
 
@@ -126,6 +138,49 @@ class AdsSearchController extends Controller
     }
 
    private function getAdsCategory($city,$idCategory,$range) {
+<<<<<<< HEAD
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+                'SELECT a,a.id
+=======
+     
+     $em = $this->getDoctrine()->getManager();
+     $query = $em->createQuery(
+            'SELECT a,a.id
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
+                    FROM AdsmanagerBundle:AdsmanagerAds a
+                    INNER JOIN a.catid c
+                    INNER JOIN AdsmanagerBundle:AdsmanagerCategories b
+                    WHERE a.published = 1
+                    AND a.expirationDate >= :date
+                    AND a.adLocation = :location
+                    AND b.id =:id
+                    AND b.id = c.id
+                    ORDER BY a.adHeadline ASC
+<<<<<<< HEAD
+            ')->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())->setParameter('id',$idCategory)->setMaxResults(10)->setFirstResult($range);
+        
+        $ads = $query->getResult();
+        return $ads;
+    }
+
+    private function getAdsCategoryRated($city,$idCategory,$range) {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+                'SELECT a,a.id
+=======
+                 '
+  
+     )->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
+     ->setParameter('id',$idCategory)->setMaxResults(10)->setFirstResult($range);
+
+     $ads = $query->getResult();
+     return $ads;
+    }
+
+    private function getAdsCategoryRated($city,$idCategory,$range) {
+    
+    
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
                 'SELECT a,a.id
@@ -137,27 +192,38 @@ class AdsSearchController extends Controller
                     AND a.adLocation = :location
                     AND b.id =:id
                     AND b.id = c.id
-                    ORDER BY a.adHeadline ASC
-            ')->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())->setParameter('id',$idCategory)->setMaxResults(10)->setFirstResult($range);
-        
+                    ORDER BY a.rated DESC
+                 '
+    
+        )->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
+        ->setParameter('id',$idCategory)->setMaxResults(10)->setFirstResult($range);
+    
         $ads = $query->getResult();
         return $ads;
     }
+    
+    private function getAdsCategoryGeolocation($latitude,$longitude,$city,$idCategory,$range) {
 
-    private function getAdsCategoryRated($city,$idCategory,$range) {
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-                'SELECT a,a.id
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery(
+                    'SELECT a,( 3959 * acos(cos(radians('.$latitude.'))' .
+                    '* cos( radians( a.adLatitude ) )' .
+                    '* cos( radians( a.adLongitude )' .
+                    '- radians('.$longitude.') )' .
+                    '+ sin( radians('.$latitude.') )' .
+                    '* sin( radians( a.adLatitude ) ) ) )*1000 AS distance
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
                     FROM AdsmanagerBundle:AdsmanagerAds a
                     INNER JOIN a.catid c
                     INNER JOIN AdsmanagerBundle:AdsmanagerCategories b
                     WHERE a.published = 1
                     AND a.expirationDate >= :date
                     AND a.adLocation = :location
-                    AND b.id =:parent
+                    AND b.id =:id
                     AND b.id = c.id
                     ORDER BY a.rated DESC
                  '
+<<<<<<< HEAD
     
         )->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
         ->setParameter('parent',$idCategory)->setMaxResults(10)->setFirstResult($range);
@@ -186,6 +252,8 @@ class AdsSearchController extends Controller
                     AND b.id = c.id
                     ORDER BY distance ASC
                  '
+=======
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
      
             )->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
             ->setParameter('id',$idCategory)->setMaxResults(10)->setFirstResult($range);
@@ -212,6 +280,7 @@ class AdsSearchController extends Controller
         if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
             return $this->redirectToRoute('fos_user_security_login');
         }
+<<<<<<< HEAD
         
         $request = $this->container->get('request');
         $search = $request->request->get('write');
@@ -226,6 +295,22 @@ class AdsSearchController extends Controller
         $search_ads->setSearch($search);
         $search_ads->setResult($result);
         
+=======
+        
+        $request = $this->container->get('request');
+        $search = $request->request->get('write');
+        $result = $request->request->get('title');
+        $date = new \DateTime();
+
+        $search_ads = new Search();
+
+        $ip = $this->container->get('request')->getClientIp();
+        $search_ads->setDateSearch($date);
+        $search_ads->setAccessIp($ip);
+        $search_ads->setSearch($search);
+        $search_ads->setResult($result);
+        
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
         $em = $this->getDoctrine()->getManager();
         $em->persist($search_ads);
         $em->flush();
