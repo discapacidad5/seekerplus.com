@@ -55,8 +55,26 @@ search_ads_category:
 search_save:
     pattern:  /app/search/save/
     defaults: { _controller: AdsmanagerBundle:AdsSearch:searchSave }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 
     
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
+=======
+
+    
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
+=======
+
+    
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
+=======
+
+    
+>>>>>>> f86880461a04343e9d3a9264d0d7226e857b1aec
 ad_comment:
     pattern:  /app/ad/ad_comment/
     defaults: { _controller: AdsmanagerBundle:Ads:adComment }
