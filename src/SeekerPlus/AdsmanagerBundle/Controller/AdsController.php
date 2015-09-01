@@ -86,9 +86,19 @@ public function adCommentAction(Request $request){
             return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
         }
        
+  
+   
+
         $request = $this->container->get('request');
         $idAd = json_decode($request->request->get('idAd'));
         $comments= json_decode($request->request->get('comment'));
+
+        $emComment = $this->getDoctrine()->getManager();
+        $queryn =  $emComment->createQuery('SELECT COUNT(a.idAds) FROM AdsmanagerBundle:AdsComments a 
+                                     Where a.idAds= :id')
+                                     ->setParameter('id',$idAd);
+        $nComments = $queryn->getSingleScalarResult();
+        $nComments= $nComments+1;
 
   
         $dateTime = new \DateTime();
@@ -106,7 +116,7 @@ public function adCommentAction(Request $request){
    
         $response = array("date" =>     $date , "success" => true ,
         'idAd' =>  $idAd ,  'userId' => $userId ,'comment' => $comments ,'userName' => $userName 
-        ,'idc' =>  $ad_comment->getId()
+        ,'idc' =>  $ad_comment->getId(),'nCommentsAds' => $nComments
         );
  
         return new JsonResponse($response);
@@ -444,8 +454,13 @@ public function adCommentAction(Request $request){
             return $this->redirectToRoute('fos_user_security_login');
         }
         
+          $emComment = $this->getDoctrine()->getManager();
+          $queryn =  $emComment->createQuery('SELECT COUNT(a.idAds) FROM AdsmanagerBundle:AdsComments a 
+                                     Where a.idAds= :id')
+                                     ->setParameter('id',$idAd);
+          $nComments = $queryn->getSingleScalarResult();
 
- $userId = $this->get('security.context')->getToken()->getUser()->getId();
+         $userId = $this->get('security.context')->getToken()->getUser()->getId();
         ///////////////
   
          $em = $this->getDoctrine()->getManager();
@@ -517,7 +532,7 @@ public function adCommentAction(Request $request){
      return $this->render('AdsmanagerBundle:Ads:show.html.twig',
                 array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,
                     "ad"=>$ad,"coments"=> $comments ,'activeUser' => $userId ,'users' => $user,
-                    "idAd" => $idAd,"idCity" =>$idCity,"rated"=>$rated));
+                    "idAd" => $idAd,"idCity" =>$idCity,"rated"=>$rated,"nComments"=>$nComments));
          
     }
 

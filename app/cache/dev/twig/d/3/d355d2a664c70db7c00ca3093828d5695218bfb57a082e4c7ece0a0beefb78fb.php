@@ -332,7 +332,10 @@ class __TwigTemplate_d355d2a664c70db7c00ca3093828d5695218bfb57a082e4c7ece0a0beef
 \t\t\t\t\t\t\t\t\t
                                   <div class=\"comments-container\">
 \t\t<ul id=\"comments-list\" class=\"comments-list\">
-             <li></li>
+             <li>Comentarios <small id=\"ncomment\">(";
+        // line 148
+        echo twig_escape_filter($this->env, (isset($context["nComments"]) ? $context["nComments"] : $this->getContext($context, "nComments")), "html", null, true);
+        echo ")  </small> <span class=\"mif-bubbles\"></span></li>
 \t\t\t\t\t";
         // line 149
         $context['_parent'] = (array) $context;
@@ -651,7 +654,7 @@ function showMessageAdRate(){
             </form>
       </center>
         \t<center>
-        \t\t<button class=\"button warning\"  onclick=\"editComment(\$('#idComment').val(),\$('#editComment').val())\">Actualizar</button>
+        \t\t<button class=\"button success\"  onclick=\"editComment(\$('#idComment').val(),\$('#editComment').val())\">Actualizar</button>
         \t<button class=\"button color-red\"  onclick=\"delDialog('#dialog')\">Cancelar</button>
         \t</center>
       
@@ -714,12 +717,14 @@ function showMessageAdRate(){
 \t\t           
 \t\t        }, 
 \t\t        \tfunction(response){
+\t\t        
+
 \t\t       \$(\"#textarea-expand\").val(\"\");
 \t\t       var lista = document.getElementById(\"comments-list\");
 \t\t       lista.innerHTML += \"<li id=\"+response.idc+\">\"
 \t\t       +'<div class=\"comment-main-level\">'
 \t\t\t   +'<div class=\"comment-avatar\"><img src=\"";
-        // line 417
+        // line 419
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/male.png"), "html", null, true);
         echo "\" alt=\"\"></div>'
 \t\t\t   +'<div class=\"comment-box\">'
@@ -737,7 +742,11 @@ function showMessageAdRate(){
 \t\t\t   +'</div>'
 \t\t       +'</div>'
 \t\t\t   +'</li>';
+\t\t\t      
+
+\t\t\t      \$('#ncomment').html(\"(\"+response.nCommentsAds+\")\");
 \t\t\t      \$('#comments-list li:last').insertAfter('#comments-list li:first');
+
 \t\t\t}, \"json\"); 
 
 \t\t\t}
@@ -748,7 +757,7 @@ function showMessageAdRate(){
 \t\tfunction dateComment(id)
 \t\t{
 \t  \$.post('";
-        // line 443
+        // line 449
         echo $this->env->getExtension('routing')->getPath("date_comment");
         echo "',               
 \t         {idComment: id,
@@ -769,7 +778,7 @@ function showMessageAdRate(){
 \t\t\t\t\t\t}
 \t\t\t\t\t\telse{
         \t\t \$.post('";
-        // line 461
+        // line 467
         echo $this->env->getExtension('routing')->getPath("edit_comment");
         echo "',               
                     {idComment: id, newComment :JSON.stringify(editcomment)
@@ -785,7 +794,7 @@ function showMessageAdRate(){
        \t\tfunction delete_ad(id)
        \t\t\t\t{
 \t\t\t\$.post('";
-        // line 474
+        // line 480
         echo $this->env->getExtension('routing')->getPath("delete_comment");
         echo "',               
 \t\t\t         {idComment: id,
@@ -806,48 +815,48 @@ function showMessageAdRate(){
            <div class=\"app-bar-drop-container\" data-role=\"dropdown\" data-toggle-element=\"#toggle-tiles-dropdown2\" data-no-close=\"false\" style=\"width: 324px; display: none;\">
               <div class=\"tile-container bg-white fg-black\">
               \t\t";
-        // line 492
+        // line 498
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["categories"]) ? $context["categories"] : $this->getContext($context, "categories")));
         foreach ($context['_seq'] as $context["_key"] => $context["field"]) {
-            // line 493
+            // line 499
             echo "\t\t\t\t      ";
             if (($this->getAttribute($context["field"], "parent", array()) == 0)) {
-                // line 494
+                // line 500
                 echo "\t\t\t\t\t  <div onclick=\"location='";
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_category", array("idCategory" => $this->getAttribute($context["field"], "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()), "latitude" => 0, "longitude" => 0, "range" => 0)), "html", null, true);
                 echo "';\" class=\"tile-small\" style=\"background: rgb(255, 255, 255) none repeat scroll 0% 0%;\">
 \t\t\t\t\t    <div class=\"tile-content iconic\">
 \t\t\t\t       \t\t<img style=\"width: 100%;height: 70%;\" alt=\"\" src=\"";
-                // line 496
+                // line 502
                 echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("../"), "html", null, true);
                 echo "images/com_adsmanager/categories/";
                 echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "id", array()));
                 echo "cat.png\">
 \t\t\t\t       \t<p class=\"pCategories\" style=\"margin-top: -1.1rem;text-align: center;\">";
-                // line 497
+                // line 503
                 echo twig_escape_filter($this->env, $this->getAttribute($context["field"], "name", array()), "html", null, true);
                 echo "</p>
 \t\t\t\t       \t</div>
               \t\t  </div>
 \t\t\t\t\t  ";
             } else {
-                // line 500
+                // line 506
                 echo "\t 
 \t\t\t\t       ";
             }
-            // line 502
+            // line 508
             echo "\t\t\t       ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['field'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 503
+        // line 509
         echo "            </div>
           </div>
   \t</a>
  \t<a href=\"";
-        // line 506
+        // line 512
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("show_ad_map", array("idAd" => $this->getAttribute((isset($context["ad"]) ? $context["ad"] : $this->getContext($context, "ad")), "id", array()), "idCity" => $this->getAttribute((isset($context["location"]) ? $context["location"] : $this->getContext($context, "location")), "id", array()))), "html", null, true);
         echo "\" class=\"app-bar-element\" style=\"margin-left: 12%\">
     \t<span id=\"toggle-tiles-dropdown2\" class=\"mif-map mif-2x\"></span>
@@ -872,6 +881,6 @@ function showMessageAdRate(){
 
     public function getDebugInfo()
     {
-        return array (  851 => 506,  846 => 503,  840 => 502,  836 => 500,  829 => 497,  823 => 496,  817 => 494,  814 => 493,  810 => 492,  789 => 474,  773 => 461,  752 => 443,  723 => 417,  711 => 408,  707 => 407,  631 => 334,  600 => 306,  596 => 305,  583 => 294,  574 => 292,  566 => 290,  558 => 288,  556 => 287,  551 => 286,  548 => 285,  544 => 284,  537 => 279,  534 => 278,  486 => 234,  462 => 213,  458 => 212,  449 => 205,  445 => 203,  443 => 202,  429 => 190,  423 => 189,  421 => 188,  413 => 182,  405 => 177,  401 => 176,  398 => 175,  396 => 174,  391 => 172,  383 => 167,  380 => 166,  373 => 164,  367 => 162,  364 => 161,  360 => 160,  351 => 154,  345 => 151,  342 => 150,  338 => 149,  304 => 117,  291 => 111,  287 => 110,  283 => 109,  280 => 108,  271 => 106,  265 => 104,  263 => 103,  255 => 97,  251 => 96,  239 => 87,  233 => 84,  228 => 81,  222 => 79,  218 => 77,  216 => 76,  205 => 67,  198 => 65,  195 => 64,  193 => 63,  190 => 62,  183 => 60,  180 => 59,  178 => 58,  173 => 55,  168 => 53,  165 => 52,  163 => 51,  158 => 48,  153 => 46,  150 => 45,  148 => 44,  144 => 42,  138 => 40,  136 => 39,  132 => 37,  123 => 35,  117 => 33,  115 => 32,  105 => 24,  103 => 23,  99 => 22,  96 => 21,  90 => 19,  85 => 18,  82 => 17,  76 => 15,  71 => 14,  65 => 11,  60 => 10,  53 => 7,  48 => 6,  45 => 5,  39 => 3,  34 => 2,  11 => 1,);
+        return array (  860 => 512,  855 => 509,  849 => 508,  845 => 506,  838 => 503,  832 => 502,  826 => 500,  823 => 499,  819 => 498,  798 => 480,  782 => 467,  761 => 449,  728 => 419,  714 => 408,  710 => 407,  634 => 334,  603 => 306,  599 => 305,  586 => 294,  577 => 292,  569 => 290,  561 => 288,  559 => 287,  554 => 286,  551 => 285,  547 => 284,  540 => 279,  537 => 278,  489 => 234,  465 => 213,  461 => 212,  452 => 205,  448 => 203,  446 => 202,  432 => 190,  426 => 189,  424 => 188,  416 => 182,  408 => 177,  404 => 176,  401 => 175,  399 => 174,  394 => 172,  386 => 167,  383 => 166,  376 => 164,  370 => 162,  367 => 161,  363 => 160,  354 => 154,  348 => 151,  345 => 150,  341 => 149,  337 => 148,  304 => 117,  291 => 111,  287 => 110,  283 => 109,  280 => 108,  271 => 106,  265 => 104,  263 => 103,  255 => 97,  251 => 96,  239 => 87,  233 => 84,  228 => 81,  222 => 79,  218 => 77,  216 => 76,  205 => 67,  198 => 65,  195 => 64,  193 => 63,  190 => 62,  183 => 60,  180 => 59,  178 => 58,  173 => 55,  168 => 53,  165 => 52,  163 => 51,  158 => 48,  153 => 46,  150 => 45,  148 => 44,  144 => 42,  138 => 40,  136 => 39,  132 => 37,  123 => 35,  117 => 33,  115 => 32,  105 => 24,  103 => 23,  99 => 22,  96 => 21,  90 => 19,  85 => 18,  82 => 17,  76 => 15,  71 => 14,  65 => 11,  60 => 10,  53 => 7,  48 => 6,  45 => 5,  39 => 3,  34 => 2,  11 => 1,);
     }
 }

@@ -145,7 +145,7 @@
 									
                                   <div class="comments-container">
 		<ul id="comments-list" class="comments-list">
-             <li></li>
+             <li>Comentarios <small id="ncomment">({{nComments}})  </small> <span class="mif-bubbles"></span></li>
 					{% for row in coments %}
 					
 					<li  id="{{ row.id }}">
@@ -353,7 +353,7 @@ $(function(){
             </form>
       </center>
         	<center>
-        		<button class="button warning"  onclick="editComment($('#idComment').val(),$('#editComment').val())">Actualizar</button>
+        		<button class="button success"  onclick="editComment($('#idComment').val(),$('#editComment').val())">Actualizar</button>
         	<button class="button color-red"  onclick="delDialog('#dialog')">Cancelar</button>
         	</center>
       
@@ -410,6 +410,8 @@ $(function(){
 		           
 		        }, 
 		        	function(response){
+		        
+
 		       $("#textarea-expand").val("");
 		       var lista = document.getElementById("comments-list");
 		       lista.innerHTML += "<li id="+response.idc+">"
@@ -430,7 +432,11 @@ $(function(){
 			   +'</div>'
 		       +'</div>'
 			   +'</li>';
+			      
+
+			      $('#ncomment').html("("+response.nCommentsAds+")");
 			      $('#comments-list li:last').insertAfter('#comments-list li:first');
+
 			}, "json"); 
 
 			}
