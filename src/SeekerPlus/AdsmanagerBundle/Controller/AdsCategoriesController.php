@@ -17,7 +17,7 @@ use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerCities;
 
 class AdsCategoriesController extends Controller
 {
-	public function showAction($idCategory,$idCity,$latitude,$longitude,$range,Request $request)
+	public function showAction($idCategory,$idCity,$range,Request $request)
 	{
 		if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
 			return $this->redirectToRoute('fos_user_security_login');
@@ -29,7 +29,7 @@ class AdsCategoriesController extends Controller
 		$city=$this->getDoctrine()
 		->getRepository("AdsmanagerBundle:AdsmanagerCities")->findOneById($idCity);
 		
-		$ads = $this->getAdsCategory ($latitude,$longitude,$city,$idCategory,$range);
+		$ads = $this->getAdsCategory ($city,$idCategory,$range);
 
 		$cities=new AdsmanagerCities();
 		 
@@ -46,14 +46,100 @@ class AdsCategoriesController extends Controller
 		$categories = $query->getResult();
 		
 		if(!$ads){
-			return $this->render('AdsmanagerBundle:Categories:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"latitude"=>$latitude,"longitude"=>$longitude));
+			return $this->render('AdsmanagerBundle:Categories:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity));
+		}
+		$adsFullData = array();
+		foreach ($ads as $ad){
+			array_push($ad,$this->getRatedAds($ad['0']));
+			array_push($adsFullData,$ad);
 		}
 
 		return $this->render('AdsmanagerBundle:Categories:show.html.twig',
-				array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"latitude"=>$latitude,"longitude"=>$longitude,"ads"=>$ads,"category"=>$category,"city"=>$city,"range"=>$range));
+				array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"ads"=>$adsFullData,"category"=>$category,"city"=>$city,"range"=>$range));
 
 	}
-
+	public function showRatedAction($idCategory,$idCity,$range,Request $request)
+	{
+		if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+			return $this->redirectToRoute('fos_user_security_login');
+		}
+	
+		$category=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCategories")->findOneById($idCategory);
+	
+		$city=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCities")->findOneById($idCity);
+	
+		$ads = $this->getAdsCategoryRated ($city,$idCategory,$range);
+	
+		$cities=new AdsmanagerCities();
+			
+		$adCities=$cities->getAllCities($this->getDoctrine()->getEntityManager());
+	
+		$locationCity=$cities->getAdCity($this->getDoctrine()->getEntityManager(),$city->getTitle(),$this);
+	
+		$categories=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCategories");
+		$query = $categories->createQueryBuilder('a')
+		->addOrderBy('a.ordering', 'ASC')
+		->getQuery();
+	
+		$categories = $query->getResult();
+	
+		if(!$ads){
+			return $this->render('AdsmanagerBundle:Categories:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity));
+		}
+		$adsFullData = array();
+		foreach ($ads as $ad){
+			array_push($ad,$this->getRatedAds($ad['0']));
+			array_push($adsFullData,$ad);
+		}
+	
+		return $this->render('AdsmanagerBundle:Categories:show.html.twig',
+				array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"ads"=>$adsFullData,"category"=>$category,"city"=>$city,"range"=>$range,"rated"=>true));
+	
+	}
+	public function showGeolocationAction($idCategory,$idCity,$latitude,$longitude,$range,Request $request)
+	{
+		if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+			return $this->redirectToRoute('fos_user_security_login');
+		}
+	
+		$category=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCategories")->findOneById($idCategory);
+	
+		$city=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCities")->findOneById($idCity);
+	
+		$ads = $this->getAdsCategoryGeolocation($latitude,$longitude,$city,$idCategory,$range);
+	
+		$cities=new AdsmanagerCities();
+			
+		$adCities=$cities->getAllCities($this->getDoctrine()->getEntityManager());
+	
+		$locationCity=$cities->getAdCity($this->getDoctrine()->getEntityManager(),$city->getTitle(),$this);
+	
+		$categories=$this->getDoctrine()
+		->getRepository("AdsmanagerBundle:AdsmanagerCategories");
+		$query = $categories->createQueryBuilder('a')
+		->addOrderBy('a.ordering', 'ASC')
+		->getQuery();
+	
+		$categories = $query->getResult();
+	
+		if(!$ads){
+			return $this->render('AdsmanagerBundle:Categories:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"latitude"=>$latitude,"longitude"=>$longitude));
+		}
+		$adsFullData = array();
+		foreach ($ads as $ad){
+			array_push($ad,$this->getRatedAds($ad['0']));
+			array_push($adsFullData,$ad);
+		}
+	
+		return $this->render('AdsmanagerBundle:Categories:show.html.twig',
+				array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"latitude"=>$latitude,"longitude"=>$longitude,"ads"=>$adsFullData,"category"=>$category,"city"=>$city,"range"=>$range));
+	
+	}
 	public function showMapAction($idCategory,$idCity,Request $request)
 	{
 		if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
@@ -103,18 +189,12 @@ class AdsCategoriesController extends Controller
 		return $this->render('AdsmanagerBundle:Map:ads.html.twig',array("categories"=>$categories,"ads"=>$ads,"location"=>$locationCity,"cities"=>$adCities));
 
 	}
-	private function getAdsCategory($latitude,$longitude,$city,$idCategory,$range) {
+	private function getAdsCategory($city,$idCategory,$range) {
 	 
- 
-	 if($latitude==0&&$longitude==0){
+
 	 $em = $this->getDoctrine()->getManager();
 	 $query = $em->createQuery(
-	 		'SELECT a,( 3959 * acos(cos(radians(4.34360))' .
-	 		'* cos( radians( a.adLatitude ) )' .
-	 		'* cos( radians( a.adLongitude )' .
-	 		'- radians(-74.3619) )' .
-	 		'+ sin( radians(4.34360) )' .
-	 		'* sin( radians( a.adLatitude ) ) ) )
+	 		'SELECT a,a.id
 				    FROM AdsmanagerBundle:AdsmanagerAds a
 				    INNER JOIN a.catid c
 				    INNER JOIN AdsmanagerBundle:AdsmanagerCategories b
@@ -128,16 +208,45 @@ class AdsCategoriesController extends Controller
   
 	 )->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
 	 ->setParameter('parent',$idCategory)->setMaxResults(10)->setFirstResult($range);
+
+	 $ads = $query->getResult();
+	 return $ads;
+	}
 	
-	 }else{
-	 	$em = $this->getDoctrine()->getManager();
-	 	$query = $em->createQuery(
-	 			'SELECT a,( 3959 * acos(cos(radians('.$latitude.'))' .
-	 			'* cos( radians( a.adLatitude ) )' .
-	 			'* cos( radians( a.adLongitude )' .
-	 			'- radians('.$longitude.') )' .
-	 			'+ sin( radians('.$latitude.') )' .
-	 			'* sin( radians( a.adLatitude ) ) ) )*1000 AS distance
+	private function getAdsCategoryRated($city,$idCategory,$range) {
+	
+	
+		$em = $this->getDoctrine()->getManager();
+		$query = $em->createQuery(
+				'SELECT a,a.id
+				    FROM AdsmanagerBundle:AdsmanagerAds a
+				    INNER JOIN a.catid c
+				    INNER JOIN AdsmanagerBundle:AdsmanagerCategories b
+				    WHERE a.published = 1
+    				AND a.expirationDate >= :date
+    			    AND a.adLocation = :location
+				    AND b.parent =:parent
+				    AND b.id = c.id
+				    ORDER BY a.rated DESC
+				 '
+	
+		)->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
+		->setParameter('parent',$idCategory)->setMaxResults(10)->setFirstResult($range);
+	
+		$ads = $query->getResult();
+		return $ads;
+	}
+	
+	private function getAdsCategoryGeolocation($latitude,$longitude,$city,$idCategory,$range) {
+
+			$em = $this->getDoctrine()->getManager();
+			$query = $em->createQuery(
+					'SELECT a,( 3959 * acos(cos(radians('.$latitude.'))' .
+					'* cos( radians( a.adLatitude ) )' .
+					'* cos( radians( a.adLongitude )' .
+					'- radians('.$longitude.') )' .
+					'+ sin( radians('.$latitude.') )' .
+					'* sin( radians( a.adLatitude ) ) ) )*1000 AS distance
 				    FROM AdsmanagerBundle:AdsmanagerAds a
 				    INNER JOIN a.catid c
 				    INNER JOIN AdsmanagerBundle:AdsmanagerCategories b
@@ -148,12 +257,24 @@ class AdsCategoriesController extends Controller
 				    AND b.id = c.id
 				    ORDER BY distance ASC
 				 '
-	 	
-	 	)->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
-	 	->setParameter('parent',$idCategory)->setMaxResults(10)->setFirstResult($range);
-	 	
-	 }
-	 $ads = $query->getResult();
-	 return $ads;
+	 
+			)->setParameter('date',new DateTime())->setParameter('location',$city->getTitle())
+			->setParameter('parent',$idCategory)->setMaxResults(10)->setFirstResult($range);
+
+		$ads = $query->getResult();
+		return $ads;
+	}
+	private function getRatedAds($idAds){
+		$em = $this->getDoctrine()->getManager();
+		$query = $em->createQuery(
+				'SELECT round(avg(a.rate))as rate,count(a.rate) as score FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+				 '
+	
+		)->setParameter('idAds',$idAds);
+	
+		$rateds = $query->getResult();
+	
+		return $rateds;
 	}
 }

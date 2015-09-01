@@ -4,9 +4,12 @@ namespace SeekerPlus\AdsmanagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerCategories;
 use SeekerPlus\AdsmanagerBundle\Form\AdsmanagerAdsType;
 use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerAds;
+use SeekerPlus\AdsmanagerBundle\Entity\AdsComments;
+use SeekerPlus\AdsmanagerBundle\Entity\AdsmanagerAdsRate;
 use SeekerPlus\AdsmanagerBundle\Models\Formdata;
 use SeekerPlus\AdsmanagerBundle\Models\Message;
 use SeekerPlus\AdsmanagerBundle\Models\Document;
@@ -67,6 +70,134 @@ class AdsController extends Controller
 				array("ads"=>$ads,"banners"=>$banners));
 
 	}
+
+
+
+
+public function adCommentAction(Request $request){
+
+     if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+        
+        $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        $userName= $this->get('security.context')->getToken()->getUser()->getName();
+       if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
+        }
+       
+  
+   
+
+        $request = $this->container->get('request');
+        $idAd = json_decode($request->request->get('idAd'));
+        $comments= json_decode($request->request->get('comment'));
+
+        $emComment = $this->getDoctrine()->getManager();
+        $queryn =  $emComment->createQuery('SELECT COUNT(a.idAds) FROM AdsmanagerBundle:AdsComments a 
+                                     Where a.idAds= :id')
+                                     ->setParameter('id',$idAd);
+        $nComments = $queryn->getSingleScalarResult();
+        $nComments= $nComments+1;
+
+  
+        $dateTime = new \DateTime();
+        $date = $dateTime->format('d/m/y H:i:s');
+ 
+        $ad_comment =new AdsComments();  
+        $em = $this->getDoctrine()->getManager();
+        $ad_comment->setIdUser($userId);
+        $ad_comment->setIdAds($idAd);
+        $ad_comment->setDateCreated($dateTime);
+        $ad_comment->setCommentAd($comments);
+        $em->persist($ad_comment);
+        $em->flush();
+
+   
+        $response = array("date" =>     $date , "success" => true ,
+        'idAd' =>  $idAd ,  'userId' => $userId ,'comment' => $comments ,'userName' => $userName 
+        ,'idc' =>  $ad_comment->getId(),'nCommentsAds' => $nComments
+        );
+ 
+        return new JsonResponse($response);
+
+   }
+
+   public function editCommentAction(Request $request){
+    if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+        return $this->redirectToRoute('fos_user_security_login');
+    }
+          $request = $this->container->get('request');
+          $id_comment = json_decode($request->request->get('idComment'));
+          $newComment = json_decode($request->request->get('newComment'));
+
+        $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        $userC=$this->getDoctrine()->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
+       
+        if ($userC->getIdUser() == $userId ) {
+
+           $em = $this->getDoctrine()->getManager();
+           $editComment = $em->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
+           $editComment->setCommentAd($newComment);
+           $em->flush();
+
+          }
+
+          $response = array("comment" =>  $newComment );
+          return new JsonResponse($response);
+         
+
+   }
+     public function dateCommentAction(Request $request){
+   if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+        return $this->redirectToRoute('fos_user_security_login');
+    }
+    $userId = $this->get('security.context')->getToken()->getUser()->getId();
+    $id_comment = json_decode($request->request->get('idComment'));
+
+    $userC=$this->getDoctrine()->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
+    if ($userC->getIdUser() == $userId ) {
+
+         $em = $this->getDoctrine()->getManager();
+         $query = $em->createQuery(
+                'SELECT a.commentAd
+                    FROM AdsmanagerBundle:AdsComments a
+                    WHERE a.id = :id           
+                 '
+    
+         )->setParameter('id', $id_comment);
+         $comments = $query->getResult();
+     }
+
+    $response = array("comment" => $comments );
+ 
+        return new JsonResponse($response);
+
+   }
+
+   public function deleteCommentAction(Request $request){
+        if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+        return $this->redirectToRoute('fos_user_security_login');
+    }
+        
+        $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        $id_comment = json_decode($request->request->get('idComment'));
+
+        $userC=$this->getDoctrine()->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
+        if ($userC->getIdUser() == $userId ) {
+
+             $delete=$this->getDoctrine()->getRepository('AdsmanagerBundle:AdsComments')->find($id_comment);
+             $em=$this->getDoctrine()->getManager();
+             $em->remove($delete);
+             $em->flush();
+        }
+   
+       $response = array("idc" => $id_comment);
+       return new JsonResponse($response);
+
+
+   }
+
 
     public function newAdsAction(Request $request)
     {
@@ -270,56 +401,184 @@ class AdsController extends Controller
     	 
     }
 
+     public function paginationAdAction(Request $request){
+
+
+     if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
+        $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        
+    
+        $request = $this->container->get('request');
+        $idAd = json_decode($request->request->get('idAd'));
+        $range = json_decode($request->request->get('range'));
+ 
+        $em2 = $this->getDoctrine()->getManager();
+         $query2 = $em2->createQuery(
+                'SELECT a
+                    FROM AdsmanagerBundle:AdsComments a
+                    WHERE a.idAds = :id       
+                    ORDER BY a.id DESC
+                 '
+    
+        )->setParameter('id',$idAd)->setFirstResult($range)->setMaxResults(10);
+         $comments = $query2->getArrayResult();
+
+         $em3 = $this->getDoctrine()->getManager();
+         $query3 = $em3->createQuery(
+                'SELECT b
+                    FROM UserBundle:User b , AdsmanagerBundle:AdsComments a
+                    WHERE a.idUser = b.id       
+                 '
+    
+        );
+         $user = $query3->getArrayResult();
+
+
+
+   return new JsonResponse(array("ida" => $idAd,"range"=>$range,'comments'=>$comments
+                                 ,"user"=>$user,'userId'=> $userId));
+       
+    
+
+        
+
+    }
+
+
     public function showAction($idAd,$idCity,Request $request){
+        
+        if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+        
+          $emComment = $this->getDoctrine()->getManager();
+          $queryn =  $emComment->createQuery('SELECT COUNT(a.idAds) FROM AdsmanagerBundle:AdsComments a 
+                                     Where a.idAds= :id')
+                                     ->setParameter('id',$idAd);
+          $nComments = $queryn->getSingleScalarResult();
+
+         $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        ///////////////
+  
+         $em = $this->getDoctrine()->getManager();
+         $query = $em->createQuery(
+                'SELECT a
+                    FROM AdsmanagerBundle:AdsComments a
+                    WHERE a.idAds = :id       
+                    ORDER BY a.id DESC
+                 '
+    
+        )->setParameter('id',$idAd)->setFirstResult(0)->setMaxResults(10);
+         $comments = $query->getResult();
+
+
+         $em2 = $this->getDoctrine()->getManager();
+         $query2 = $em->createQuery(
+                'SELECT b
+                    FROM UserBundle:User b , AdsmanagerBundle:AdsComments a
+                    WHERE a.idUser = b.id       
+                 '
+    
+        );
+         $user = $query2->getResult();
+
+//////////////////7
+
+        $ad=$this->getDoctrine()
+        ->getRepository("AdsmanagerBundle:AdsmanagerAds")->findOneById($idAd);
+        
+        $products= $this->getDoctrine()
+            ->getRepository("AdsmanagerBundle:AdsmanagerProduct")
+            ->findByIdAd($ad->getId());
+            foreach ($products as $product){
+        
+                $ad->setProducts (array('id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'description' => $product->getDescription(),
+                        'price' => $product->getPrice(),
+                        'images' => $product->getImages()
+                ));
+        
+            }
+        
+        $city=$this->getDoctrine()
+        ->getRepository("AdsmanagerBundle:AdsmanagerCities")->findOneById($idCity);
+        
+        $cities=new AdsmanagerCities();
+        
+            
+        $adCities=$cities->getAllCities($this->getDoctrine()->getEntityManager());
+        
+        $locationCity=$cities->getAdCity($this->getDoctrine()->getEntityManager(),$city->getTitle(),$this);
+        
+        $categories=$this->getDoctrine()
+        ->getRepository("AdsmanagerBundle:AdsmanagerCategories");
+        $query = $categories->createQueryBuilder('a')
+        ->addOrderBy('a.ordering', 'ASC')
+        ->getQuery();
+        
+        $categories = $query->getResult();
+        
+        $rated=$this->getRatedAds($idAd);
+        
+        if(!$ad){
+            return $this->render('AdsmanagerBundle:Ads:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity));
+        }
+        
+        
+     return $this->render('AdsmanagerBundle:Ads:show.html.twig',
+                array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,
+                    "ad"=>$ad,"coments"=> $comments ,'activeUser' => $userId ,'users' => $user,
+                    "idAd" => $idAd,"idCity" =>$idCity,"rated"=>$rated,"nComments"=>$nComments));
+         
+    }
+
+    public function RateAction(Request $request){
     	
     	if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
     		return $this->redirectToRoute('fos_user_security_login');
     	}
     	
-    	$ad=$this->getDoctrine()
-    	->getRepository("AdsmanagerBundle:AdsmanagerAds")->findOneById($idAd);
-    	
-    	$products= $this->getDoctrine()
-    		->getRepository("AdsmanagerBundle:AdsmanagerProduct")
-    		->findByIdAd($ad->getId());
-    		foreach ($products as $product){
-    	
-    			$ad->setProducts (array('id' => $product->getId(),
-    					'name' => $product->getName(),
-    					'description' => $product->getDescription(),
-    					'price' => $product->getPrice(),
-    					'images' => $product->getImages()
-    			));
-    	
-    		}
-    	
-    	$city=$this->getDoctrine()
-    	->getRepository("AdsmanagerBundle:AdsmanagerCities")->findOneById($idCity);
-    	
-    	$cities=new AdsmanagerCities();
-    	
-    		
-    	$adCities=$cities->getAllCities($this->getDoctrine()->getEntityManager());
-    	
-    	$locationCity=$cities->getAdCity($this->getDoctrine()->getEntityManager(),$city->getTitle(),$this);
-    	
-    	$categories=$this->getDoctrine()
-    	->getRepository("AdsmanagerBundle:AdsmanagerCategories");
-    	$query = $categories->createQueryBuilder('a')
-    	->addOrderBy('a.ordering', 'ASC')
-    	->getQuery();
-    	
-    	$categories = $query->getResult();
-    	
-    	if(!$ad){
-    		return $this->render('AdsmanagerBundle:Ads:dontExits.html.twig',array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity));
+    	if (!$request->isXmlHttpRequest()) {
+    		return new JsonResponse(array('message' => 'You can access this only using Ajax!'), 400);
     	}
     	
-    	return $this->render('AdsmanagerBundle:Ads:show.html.twig',
-    			array("categories"=>$categories,"cities"=>$adCities,"location"=>$locationCity,"ad"=>$ad));
-    	 
-    }
+    	$request = $this->container->get('request');
+    	$idAd = json_decode($request->request->get('idAd'));
+    	$rate = json_decode($request->request->get('rate'));
+    	
+    	$adsRate=new AdsmanagerAdsRate();
+    	$formData=new Formdata();
+    	$userId = $this->get('security.context')->getToken()->getUser()->getId();
+ 	
+    	if($this-> isRated($idAd,$userId)){
+    		
+    		$adsRate=$this->getDoctrine()
+    		->getRepository("AdsmanagerBundle:AdsmanagerAdsRate")
+    		->find($this->getRatedId($idAd,$userId));
+    		$adsRate->setIdUser($userId);
+    		$adsRate->setIdAds($idAd);
+    		$adsRate->setRate($rate);
+    		$formData->updateData($this);
+    		$this->setRatedAds($idAd,$this->getRatedAdsValue($idAd));
+    		$rated=$this->getRatedAds($idAd);
+    		$response = array("code" => 100 , "success" => true ,"rated" => $rated[0]);
+    		return new JsonResponse($response);
+    	}
 
+    	$adsRate->setIdUser($userId);
+    	$adsRate->setIdAds($idAd);
+    	$adsRate->setRate($rate);
+    	$formData->insertData($this,$adsRate);
+    	$this->setRatedAds($idAd,$this->getRatedAdsValue($idAd));
+    	$rated=$this->getRatedAds($idAd);
+    	$response = array("code" => 100 , "success" => true ,"rated" => $rated[0]);
+    	return new JsonResponse($response);
+
+    }
     public function showMapAction($idAd,$idCity,Request $request)
     {
     	if(!$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
@@ -413,4 +672,75 @@ class AdsController extends Controller
      	return true;
     }
     
+    private function isRated($idAds,$idUser){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT a FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+    				AND a.idUser = :idUser
+				 '
+    	
+    	)->setParameter('idAds',$idAds)
+    	->setParameter('idUser',$idUser);
+    	
+    	$rated = $query->getResult();
+    	
+    	if($rated)
+    		return true;
+    	return false;
+    }
+    private function getRatedId($idAds,$idUser){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT a.id FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+    				AND a.idUser = :idUser
+				 '
+   
+    	)->setParameter('idAds',$idAds)
+    	->setParameter('idUser',$idUser);
+    	 
+    	$rateds = $query->getResult();
+   	
+    	return $rateds[0]['id'];
+    }
+    
+    private function getRatedAds($idAds){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT round(avg(a.rate))as rate,count(a.rate) as score FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+				 '
+  
+    	)->setParameter('idAds',$idAds);
+  
+    	$rateds = $query->getResult();
+    
+    	return $rateds;
+    }
+    
+    private function getRatedAdsValue($idAds){
+    	$em = $this->getDoctrine()->getManager();
+    	$query = $em->createQuery(
+    			'SELECT round(avg(a.rate))as rate,count(a.rate) as score FROM AdsmanagerBundle:AdsmanagerAdsRate a
+				    WHERE a.idAds = :idAds
+				 '
+    
+    	)->setParameter('idAds',$idAds);
+    
+    	$rateds = $query->getResult();
+    
+    	return $rateds[0]['rate'];
+    }
+    
+    private function setRatedAds($idAds,$rated){
+    	$formData=new Formdata();
+    	$ad=$this->getDoctrine()
+    	->getRepository("AdsmanagerBundle:AdsmanagerAds")
+    	->find($idAds);
+    	
+    	$ad->setRated($rated);
+    	$formData->updateData($this);
+    	
+    }
 }

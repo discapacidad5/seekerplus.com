@@ -80,7 +80,7 @@ color: inherit;margin: 0px 0px 10px;"href="#" class="list">
 		{% elseif rated is defined %}
 		<a href="{{ path('show_category_rated', {'idCategory': category.id,'idCity': location.id,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
 		{% else %}
-		<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
+		<a href="{{ path('search_ads_category', {'idCategory': category.id,'idCity': location.id,'range':minrange}) }}" class="button"><span class="mif-chevron-left"></span> Atras</a>
 		{% endif %}
 	{% endif %}
 	{% if counter >= 10 %}
@@ -90,7 +90,7 @@ color: inherit;margin: 0px 0px 10px;"href="#" class="list">
 		{% elseif rated is defined %}
 		<a href="{{ path('show_category_rated', {'idCategory': category.id,'idCity': location.id,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
 		{% else %}
-		<a href="{{ path('show_category', {'idCategory': category.id,'idCity': location.id,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
+		<a href="{{ path('search_ads_category', {'idCategory': category.id,'idCity': location.id,'range':maxrange}) }}" class="button success"></span> Siguiente <span class="mif-chevron-right"></a>
 		{% endif %}
 	{% endif %}
 </div>
